@@ -51,10 +51,7 @@
         "laravel": {
             "providers": [
                 "Spatie\\ArtisanDispatchable\\ArtisanDispatchableServiceProvider"
-            ],
-            "aliases": {
-                "ArtisanDispatchable": "Spatie\\ArtisanDispatchable\\ArtisanDispatchableFacade"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",

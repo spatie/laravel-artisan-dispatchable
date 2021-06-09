@@ -2,24 +2,27 @@
 
 namespace Spatie\ArtisanDispatchable;
 
+use Spatie\ArtisanDispatchable\Console\CacheArtisanDispatchableJobsCommand;
+use Spatie\ArtisanDispatchable\Console\ClearArtisanDispatchableJobsCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Spatie\ArtisanDispatchable\Commands\ArtisanDispatchableCommand;
 
 class ArtisanDispatchableServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package
             ->name('laravel-artisan-dispatchable')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_laravel-artisan-dispatchable_table')
-            ->hasCommand(ArtisanDispatchableCommand::class);
+            ->hasCommands([
+                CacheArtisanDispatchableJobsCommand::class,
+                ClearArtisanDispatchableJobsCommand::class,
+            ]);
+    }
+
+    public function packageBooted()
+    {
+        (new RegisterArtisanJobs())->start();
     }
 }
