@@ -2,9 +2,9 @@
 
 namespace Spatie\ArtisanDispatchable;
 
+use Spatie\ArtisanDispatchable\Commands\ArtisanDispatchableCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Spatie\ArtisanDispatchable\Commands\ArtisanDispatchableCommand;
 
 class ArtisanDispatchableServiceProvider extends PackageServiceProvider
 {
