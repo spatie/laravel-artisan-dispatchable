@@ -55,8 +55,8 @@ return [
 ## Usage
 
 ```php
-$laravel-artisan-dispatchable = new Spatie\ArtisanDispatchable();
-echo $laravel-artisan-dispatchable->echoPhrase('Hello, Spatie!');
+$laravel_artisan_dispatchable = new Spatie\ArtisanDispatchable();
+echo $laravel_artisan_dispatchable->echoPhrase('Hello, Spatie!');
 ```
 
 ## Testing
