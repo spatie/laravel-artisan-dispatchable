@@ -7,8 +7,6 @@ class RegisterArtisanJobs
     public function start()
     {
         $artisanDispatchableJobs = $this->getArtistanDispatchableJobs();
-
-
     }
 
     public function getArtistanDispatchableJobs()
