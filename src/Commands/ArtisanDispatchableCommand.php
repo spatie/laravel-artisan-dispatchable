@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Spatie\ArtisanDispatchable\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class ArtisanDispatchableCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-artisan-dispatchable';
 
     public $description = 'My command';
 

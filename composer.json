@@ -1,17 +1,17 @@
 {
-    "name": "vendor_slug/package_slug",
-    "description": ":package_description",
+    "name": "spatie/laravel-artisan-dispatchable",
+    "description": "Dispatch Laravel jobs via Artisan",
     "keywords": [
-        ":vendor_name",
+        "spatie",
         "laravel",
-        "package_slug"
+        "laravel-artisan-dispatchable"
     ],
-    "homepage": "https://github.com/vendor_slug/package_slug",
+    "homepage": "https://github.com/spatie/laravel-artisan-dispatchable",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Freek Van der Herten",
+            "email": "freek@spatie.be",
             "role": "Developer"
         }
     ],
@@ -30,13 +30,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Spatie\\ArtisanDispatchable\\": "src",
+            "Spatie\\ArtisanDispatchable\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "Spatie\\ArtisanDispatchable\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -50,10 +50,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Spatie\\ArtisanDispatchable\\ArtisanDispatchableServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\SkeletonFacade"
+                "ArtisanDispatchable": "Spatie\\ArtisanDispatchable\\ArtisanDispatchableFacade"
             }
         }
     },

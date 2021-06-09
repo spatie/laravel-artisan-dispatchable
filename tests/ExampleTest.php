@@ -1,6 +1,6 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace Spatie\ArtisanDispatchable\Tests;
 
 class ExampleTest extends TestCase
 {
