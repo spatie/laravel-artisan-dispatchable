@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use Illuminate\Support\Facades\Artisan;
 use Spatie\ArtisanDispatchable\ArtisanJob;
 use Spatie\ArtisanDispatchable\ArtisanJobsRepository;
 use Tests\TestClasses\Jobs\BasicTestJob;
