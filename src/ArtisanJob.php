@@ -2,7 +2,6 @@
 
 namespace Spatie\ArtisanDispatchable;
 
-use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Console\ClosureCommand;
 use Illuminate\Support\Facades\Artisan;
@@ -14,7 +13,6 @@ class ArtisanJob
 {
     public function __construct(protected string $jobClassName)
     {
-
     }
 
     public function register(): void
@@ -46,8 +44,8 @@ class ArtisanJob
             ->getParameters();
 
         return collect($parameters)
-            ->map(fn(ReflectionParameter $parameter) => $parameter->name)
-            ->map(fn(string $argumentName) => '{--' . Str::kebab($argumentName) . '=}')
+            ->map(fn (ReflectionParameter $parameter) => $parameter->name)
+            ->map(fn (string $argumentName) => '{--' . Str::kebab($argumentName) . '=}')
             ->implode(' ');
     }
 
@@ -81,6 +79,4 @@ class ArtisanJob
                 return $value;
             })->all();
     }
-
-
 }
