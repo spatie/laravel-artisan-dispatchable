@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\ArtisanDispatchable\Tests;
+namespace Tests;
 
 class ExampleTest extends TestCase
 {

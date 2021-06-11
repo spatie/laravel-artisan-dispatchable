@@ -43,7 +43,11 @@ class ArtisanJob
     {
         $parameters = (new ReflectionClass($this->jobClassName))
             ->getConstructor()
-            ->getParameters();
+            ?->getParameters();
+
+        if (is_null($parameters)) {
+            return '';
+        }
 
         return collect($parameters)
             ->map(fn(ReflectionParameter $parameter) => $parameter->name)
@@ -64,7 +68,11 @@ class ArtisanJob
     {
         $parameters = (new ReflectionClass($this->jobClassName))
             ->getConstructor()
-            ->getParameters();
+            ?->getParameters();
+
+        if (is_null(($parameters))) {
+            return [];
+        }
 
         return collect($parameters)
             ->map(function (ReflectionParameter $parameter) use ($command) {

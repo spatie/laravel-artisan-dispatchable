@@ -36,7 +36,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\ArtisanDispatchable\\Tests\\": "tests"
+            "Tests\\": "tests"
         }
     },
     "scripts": {

@@ -61,13 +61,15 @@ class DiscoverArtisanJobs
         return collect($files)
             ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $this->ignoredFiles))
             ->map(fn (SplFileInfo $file) => $this->fullQualifiedClassNameFromFile($file))
-            ->filter(fn (string $eventHandlerClass) => is_subclass_of($eventHandlerClass, ArtisanDispatchable::class))
+            ->filter(function (string $eventHandlerClass) {
+                return is_subclass_of($eventHandlerClass, ArtisanDispatchable::class);
+            })
             ->toArray();
     }
 
     protected function fullQualifiedClassNameFromFile(SplFileInfo $file): string
     {
-        $class = trim(Str::replaceFirst($this->basePath, '', $file->getRealPath()), DIRECTORY_SEPARATOR);
+        $class = ucfirst(trim(Str::replaceFirst($this->basePath, '', $file->getRealPath()), DIRECTORY_SEPARATOR));
 
         $class = str_replace(
             [DIRECTORY_SEPARATOR, 'App\\'],

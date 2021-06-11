@@ -17,7 +17,6 @@ class ArtisanDispatchableServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-artisan-dispatchable')
             ->hasConfigFile()
-            ->hasViews()
             ->hasCommands([
                 CacheArtisanDispatchableJobsCommand::class,
                 ClearArtisanDispatchableJobsCommand::class,
