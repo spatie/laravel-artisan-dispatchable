@@ -2,6 +2,9 @@
 
 namespace Spatie\ArtisanDispatchable;
 
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
+use ReflectionClass;
 use Spatie\ArtisanDispatchable\Console\CacheArtisanDispatchableJobsCommand;
 use Spatie\ArtisanDispatchable\Console\ClearArtisanDispatchableJobsCommand;
 use Spatie\LaravelPackageTools\Package;
@@ -23,6 +26,10 @@ class ArtisanDispatchableServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
-        (new RegisterArtisanJobs())->start();
+        $artisanJobs = (new ArtisanJobsRepository())->getAll();
+
+        collect($artisanJobs)->each(function (string $className) {
+            (new ArtisanJob($className))->register();
+        });
     }
 }

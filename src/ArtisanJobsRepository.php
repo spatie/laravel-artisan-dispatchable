@@ -2,16 +2,9 @@
 
 namespace Spatie\ArtisanDispatchable;
 
-class RegisterArtisanJobs
+class ArtisanJobsRepository
 {
-    public function start()
-    {
-        $artisanDispatchableJobs = $this->getArtistanDispatchableJobs();
-
-
-    }
-
-    public function getArtistanDispatchableJobs()
+    public function getAll()
     {
         $cachedDispatchableJobs = $this->getCachedDispatchableJobs();
 
@@ -21,7 +14,7 @@ class RegisterArtisanJobs
 
         return (new DiscoverArtisanJobs())
             ->within(config('artisan-dispatchable.auto_discover_dispatchable_jobs'))
-            ->useBasePath(config('artisan-dispatchable.auto_discover_dispatchable_jobs'))
+            ->useBasePath(config('artisan-dispatchable.auto_discover_base_path'))
             ->ignoringFiles(Composer::getAutoloadedFiles(base_path('composer.json')))
             ->getArtisanDispatchableJobs();
     }
