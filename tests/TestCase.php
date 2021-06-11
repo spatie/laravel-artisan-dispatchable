@@ -48,7 +48,7 @@ class TestCase extends Orchestra
 
     public function getTestDirectory(): string
     {
-        return Str::replaceLast('tests','',  __DIR__);
+        return Str::replaceLast('tests', '',  __DIR__);
     }
 
     public function getJobsDirectory(): string
