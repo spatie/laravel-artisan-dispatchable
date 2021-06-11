@@ -78,4 +78,3 @@ class DiscoverArtisanJobs
         return $this->rootNamespace.$class;
     }
 }
-

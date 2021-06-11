@@ -4,7 +4,7 @@ namespace Spatie\ArtisanDispatchable;
 
 class ArtisanJobsRepository
 {
-    public function getAll()
+    public function getAll(): array
     {
         $cachedDispatchableJobs = $this->getCachedDispatchableJobs();
 
