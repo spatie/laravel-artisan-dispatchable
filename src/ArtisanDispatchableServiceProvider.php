@@ -2,9 +2,6 @@
 
 namespace Spatie\ArtisanDispatchable;
 
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Str;
-use ReflectionClass;
 use Spatie\ArtisanDispatchable\Console\CacheArtisanDispatchableJobsCommand;
 use Spatie\ArtisanDispatchable\Console\ClearArtisanDispatchableJobsCommand;
 use Spatie\LaravelPackageTools\Package;

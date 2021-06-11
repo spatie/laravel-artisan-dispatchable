@@ -4,5 +4,4 @@ namespace Spatie\ArtisanDispatchable;
 
 class CommandHandler
 {
-
 }
