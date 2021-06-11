@@ -5,6 +5,7 @@ namespace Tests;
 use Illuminate\Support\Facades\Artisan;
 use Spatie\ArtisanDispatchable\ArtisanJob;
 use Spatie\ArtisanDispatchable\ArtisanJobsRepository;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Tests\TestClasses\Jobs\BasicTestJob;
 
 class IntegrationTest extends TestCase
@@ -33,5 +34,13 @@ class IntegrationTest extends TestCase
             ->assertExitCode(0);
 
         $this->assertInstanceOf(BasicTestJob::class, self::$handledJob);
+    }
+
+    /** @test */
+    public function it_will_not_register_jobs_that_did_not_implement_the_marker_interface()
+    {
+        $this->expectException(CommandNotFoundException::class);
+
+        $this->artisan('invalid');
     }
 }
