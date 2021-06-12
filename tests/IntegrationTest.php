@@ -7,7 +7,10 @@ use Spatie\ArtisanDispatchable\ArtisanJobsRepository;
 use Spatie\ArtisanDispatchable\Exceptions\RequiredOptionMissing;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Tests\TestClasses\Jobs\BasicTestJob;
+use Tests\TestClasses\Jobs\BooleanTestJob;
+use Tests\TestClasses\Jobs\IntegerTestJob;
 use Tests\TestClasses\Jobs\ModelTestJob;
+use Tests\TestClasses\Jobs\StringTestJob;
 use Tests\TestClasses\Models\TestModel;
 
 class IntegrationTest extends TestCase
@@ -51,7 +54,9 @@ class IntegrationTest extends TestCase
     {
         $testModel = TestModel::factory()->create();
 
-        $this->artisan("model-test --testModel={$testModel->id}");
+        $this
+            ->artisan("model-test --testModel={$testModel->id}")
+            ->assertExitCode(0);
 
         $this->assertInstanceOf(ModelTestJob::class, self::$handledJob);
 
@@ -64,5 +69,42 @@ class IntegrationTest extends TestCase
         $this->expectException(RequiredOptionMissing::class);
 
         $this->artisan("model-test");
+    }
+
+    /** @test */
+    public function it_can_handle_string_options()
+    {
+        $this
+            ->artisan("string-test --myString='first string' --anotherString='another string'")
+            ->assertExitCode(0);
+
+        $this->assertInstanceOf(StringTestJob::class, self::$handledJob);
+
+        $this->assertEquals('first string', self::$handledJob->myString);
+        $this->assertEquals('another string', self::$handledJob->anotherString);
+    }
+
+    /** @test */
+    public function it_can_handle_integer_options()
+    {
+        $this
+            ->artisan("integer-test --myInteger=1234")
+            ->assertExitCode(0);
+
+        $this->assertInstanceOf(IntegerTestJob::class, self::$handledJob);
+        $this->assertEquals(1234, self::$handledJob->myInteger);
+    }
+
+    /** @test */
+    public function it_can_handle_boolean_options()
+    {
+        $this
+            ->artisan("boolean-test --firstBoolean=1 --secondBoolean=0")
+            ->assertExitCode(0);
+
+        $this->assertInstanceOf(BooleanTestJob::class, self::$handledJob);
+        $this->assertTrue(self::$handledJob->firstBoolean);
+        $this->assertFalse(self::$handledJob->secondBoolean);
+
     }
 }
