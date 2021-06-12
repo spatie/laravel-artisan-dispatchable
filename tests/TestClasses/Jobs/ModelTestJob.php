@@ -8,6 +8,5 @@ class ModelTestJob extends BaseTestJob
 {
     public function __construct(public TestModel $testModel)
     {
-
     }
 }

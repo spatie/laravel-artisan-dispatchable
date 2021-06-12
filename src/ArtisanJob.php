@@ -19,7 +19,7 @@ class ArtisanJob
     public function register(): void
     {
         $artisanJob = $this;
-ray($this->getFullCommand());
+        ray($this->getFullCommand());
         Artisan::command($this->getFullCommand(), function () use ($artisanJob) {
             /** @var $this ClosureCommand */
             $artisanJob->handleCommand($this);
