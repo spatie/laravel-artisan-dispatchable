@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionParameter;
+use Spatie\ArtisanDispatchable\Exceptions\RequiredOptionMissing;
 
 class ArtisanJob
 {
@@ -77,6 +78,10 @@ ray($this->getFullCommand());
                 $parameterName = $parameter->getName();
 
                 $value = $command->option($parameterName);
+
+                if (is_null($value)) {
+                    throw RequiredOptionMissing::make($this->getCommandName(), $parameterName);
+                }
 
                 $parameterType = $parameter->getType()->getName();
 

@@ -2,9 +2,9 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Auth\User;
 use Spatie\ArtisanDispatchable\ArtisanJob;
 use Spatie\ArtisanDispatchable\ArtisanJobsRepository;
+use Spatie\ArtisanDispatchable\Exceptions\RequiredOptionMissing;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Tests\TestClasses\Jobs\BasicTestJob;
 use Tests\TestClasses\Jobs\ModelTestJob;
@@ -56,5 +56,13 @@ class IntegrationTest extends TestCase
         $this->assertInstanceOf(ModelTestJob::class, self::$handledJob);
 
         $this->assertEquals($testModel->id, self::$handledJob->testModel->id);
+    }
+
+    /** @test */
+    public function it_will_throw_an_exception_if_a_required_parameter_is_not_passed()
+    {
+        $this->expectException(RequiredOptionMissing::class);
+
+        $this->artisan("model-test");
     }
 }
