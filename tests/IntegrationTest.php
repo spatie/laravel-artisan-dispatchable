@@ -105,6 +105,5 @@ class IntegrationTest extends TestCase
         $this->assertInstanceOf(BooleanTestJob::class, self::$handledJob);
         $this->assertTrue(self::$handledJob->firstBoolean);
         $this->assertFalse(self::$handledJob->secondBoolean);
-
     }
 }
