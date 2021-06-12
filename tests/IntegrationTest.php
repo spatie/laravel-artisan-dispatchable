@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Auth\User;
 use Spatie\ArtisanDispatchable\ArtisanJob;
 use Spatie\ArtisanDispatchable\ArtisanJobsRepository;
 use Symfony\Component\Console\Exception\CommandNotFoundException;

@@ -19,7 +19,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn(string $modelName) => 'Tests\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'Tests\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
 
         self::$handledJob = null;
