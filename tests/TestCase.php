@@ -3,6 +3,8 @@
 namespace Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Spatie\ArtisanDispatchable\ArtisanDispatchableServiceProvider;
@@ -17,7 +19,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Spatie\\ArtisanDispatchable\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn(string $modelName) => 'Tests\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
 
         self::$handledJob = null;
@@ -35,10 +37,11 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
-        /*
-        include_once __DIR__.'/../database/migrations/create_laravel-artisan-dispatchable_table.php.stub';
-        (new \CreatePackageTable())->up();
-        */
+        Schema::create('test_models', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
     }
 
     public static function handledJob(object $job)
@@ -48,7 +51,7 @@ class TestCase extends Orchestra
 
     public function getTestDirectory(): string
     {
-        return Str::replaceLast('tests', '',  __DIR__);
+        return Str::replaceLast('tests', '', __DIR__);
     }
 
     public function getJobsDirectory(): string

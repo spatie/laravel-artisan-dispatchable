@@ -18,7 +18,7 @@ class ArtisanJob
     public function register(): void
     {
         $artisanJob = $this;
-
+ray($this->getFullCommand());
         Artisan::command($this->getFullCommand(), function () use ($artisanJob) {
             /** @var $this ClosureCommand */
             $artisanJob->handleCommand($this);
@@ -49,7 +49,7 @@ class ArtisanJob
 
         return collect($parameters)
             ->map(fn (ReflectionParameter $parameter) => $parameter->name)
-            ->map(fn (string $argumentName) => '{--' . Str::kebab($argumentName) . '=}')
+            ->map(fn (string $argumentName) => '{--' . Str::camel($argumentName) . '=}')
             ->implode(' ');
     }
 

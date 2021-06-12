@@ -2,10 +2,13 @@
 
 namespace Tests;
 
+use Illuminate\Foundation\Auth\User;
 use Spatie\ArtisanDispatchable\ArtisanJob;
 use Spatie\ArtisanDispatchable\ArtisanJobsRepository;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Tests\TestClasses\Jobs\BasicTestJob;
+use Tests\TestClasses\Jobs\ModelTestJob;
+use Tests\TestClasses\Models\TestModel;
 
 class IntegrationTest extends TestCase
 {
@@ -41,5 +44,17 @@ class IntegrationTest extends TestCase
         $this->expectException(CommandNotFoundException::class);
 
         $this->artisan('invalid');
+    }
+
+    /** @test */
+    public function it_can_retrieve_a_model()
+    {
+        $testModel = TestModel::factory()->create();
+
+        $this->artisan("model-test --testModel={$testModel->id}");
+
+        $this->assertInstanceOf(ModelTestJob::class, self::$handledJob);
+
+        $this->assertEquals($testModel->id, self::$handledJob->testModel->id);
     }
 }
