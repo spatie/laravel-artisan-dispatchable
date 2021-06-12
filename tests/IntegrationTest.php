@@ -4,6 +4,7 @@ namespace Tests;
 
 use Spatie\ArtisanDispatchable\ArtisanJob;
 use Spatie\ArtisanDispatchable\ArtisanJobsRepository;
+use Spatie\ArtisanDispatchable\Exceptions\ModelNotFound;
 use Spatie\ArtisanDispatchable\Exceptions\RequiredOptionMissing;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Tests\TestClasses\Jobs\BasicTestJob;
@@ -61,6 +62,16 @@ class IntegrationTest extends TestCase
         $this->assertInstanceOf(ModelTestJob::class, self::$handledJob);
 
         $this->assertEquals($testModel->id, self::$handledJob->testModel->id);
+    }
+
+    /** @test */
+    public function it_will_throw_an_exception_if_a_model_cannot_be_found()
+    {
+        $this->expectException(ModelNotFound::class);
+
+        $this
+            ->artisan("model-test --testModel=1234")
+            ->assertExitCode(0);
     }
 
     /** @test */

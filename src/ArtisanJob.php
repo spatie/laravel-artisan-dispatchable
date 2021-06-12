@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionParameter;
+use Spatie\ArtisanDispatchable\Exceptions\ModelNotFound;
 use Spatie\ArtisanDispatchable\Exceptions\RequiredOptionMissing;
 
 class ArtisanJob
@@ -86,7 +87,13 @@ class ArtisanJob
                 $parameterType = $parameter->getType()->getName();
 
                 if (is_a($parameterType, Model::class, true)) {
-                    $value = $parameterType::find($value);
+                    $model = $parameterType::find($value);
+
+                    if (is_null($model)) {
+                        throw ModelNotFound::make($this->getCommandName(), $parameterName, $value);
+                    }
+
+                    $value = $model;
                 }
 
                 return $value;
