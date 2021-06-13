@@ -5,17 +5,29 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-artisan-dispatchable/Check%20&%20fix%20styling?label=code%20style)](https://github.com/spatie/laravel-artisan-dispatchable/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-artisan-dispatchable.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-artisan-dispatchable)
 
----
-This repo can be used as to scaffold a Laravel package. Follow these steps to get started:
+This package can register jobs as Artisan commands.
 
-1. Press the "Use template" button at the top of this repo to create a new repo with the contents of this laravel-artisan-dispatchable
-2. Run "./configure-laravel-artisan-dispatchable.sh" to run a script that will replace all placeholders throughout all the files
-3. Remove this block of text.
-4. Have fun creating your package.
-5. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
+All you need to do is let your job implement the empty `ArtisanDispatchable` interface.
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+```php
+use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
+
+class MyJob implements ArtisanDispatchable
+{
+    public function handle()
+    {
+        // perform some work...
+    }
+}
+```
+
+This allows the job to be executed via Artisan. 
+
+```bash
+php artisan my-job
+```
+
+By default, the handle method of the job will be executed immediately.
 
 ## Support us
 
@@ -35,20 +47,36 @@ composer require spatie/laravel-artisan-dispatchable
 
 You can publish and run the migrations with:
 
+Optionally, uou can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="Spatie\ArtisanDispatchable\ArtisanDispatchableServiceProvider" --tag="laravel-artisan-dispatchable-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-```bash
-php artisan vendor:publish --provider="Spatie\ArtisanDispatchable\ArtisanDispatchableServiceProvider" --tag="laravel-artisan-dispatchable-config"
+php artisan vendor:publish --provider="Spatie\ArtisanDispatchable\ArtisanDispatchableServiceProvider" --tag="artisan-dispatchable-config"
 ```
 
 This is the contents of the published config file:
 
 ```php
 return [
+    /*
+     * These directories will be scanned for dispatchable jobs. They
+     * will be registered automatically to Artisan.
+     */
+    'auto_discover_dispatchable_jobs' => [
+        app()->path(),
+    ],
+
+    /*
+     * This directory will be used as the base path when scanning
+     * for dispatchable jobs.
+     */
+    'auto_discover_base_path' => base_path(),
+
+    /*
+     * In production, you likely don't want the package to auto-discover dispatchable
+     * jobs every time Artisan is invoked. The package can cache discovered job.
+     *
+     * Here you can specify where the cache should be stored.
+     */
+    'cache_file' => storage_path('app/artisan-dispatchable/artisan-dispatchable-jobs.php'),
 ];
 ```
 
