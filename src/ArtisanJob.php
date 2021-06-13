@@ -4,7 +4,6 @@ namespace Spatie\ArtisanDispatchable;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Console\ClosureCommand;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionParameter;
@@ -15,7 +14,6 @@ class ArtisanJob
 {
     public function __construct(protected string $jobClassName)
     {
-
     }
 
     public function getFullCommand(): string
@@ -41,8 +39,8 @@ class ArtisanJob
         }
 
         return collect($parameters)
-            ->map(fn(ReflectionParameter $parameter) => $parameter->name)
-            ->map(fn(string $argumentName) => '{--' . Str::camel($argumentName) . '=}')
+            ->map(fn (ReflectionParameter $parameter) => $parameter->name)
+            ->map(fn (string $argumentName) => '{--' . Str::camel($argumentName) . '=}')
             ->implode(' ');
     }
 

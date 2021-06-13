@@ -65,7 +65,7 @@ class DiscoverArtisanJobs
             ->filter(function (string $eventHandlerClass) {
                 return is_subclass_of($eventHandlerClass, ArtisanDispatchable::class);
             })
-            ->map(fn(string $className) => new DiscoveredArtisanJob(
+            ->map(fn (string $className) => new DiscoveredArtisanJob(
                 $className,
                 (new ArtisanJob($className))->getFullCommand(),
             ));

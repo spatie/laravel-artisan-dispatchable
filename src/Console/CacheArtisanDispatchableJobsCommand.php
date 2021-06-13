@@ -19,7 +19,7 @@ class CacheArtisanDispatchableJobsCommand extends Command
 
         $artisanJobs = (new DiscoverArtisanJobs())
             ->getArtisanDispatchableJobs()
-            ->map(fn(DiscoveredArtisanJob $discoveredArtisanJob) => $discoveredArtisanJob->toArray())
+            ->map(fn (DiscoveredArtisanJob $discoveredArtisanJob) => $discoveredArtisanJob->toArray())
             ->toArray();
 
         $cachePath = config('artisan-dispatchable.cache_file');

@@ -27,7 +27,6 @@ class ArtisanDispatchableServiceProvider extends PackageServiceProvider
         $artisanJobs = (new ArtisanJobsRepository())->getAll();
 
         collect($artisanJobs)->each(function (DiscoveredArtisanJob $discoveredArtisanJob) {
-
             $artisanJob = new ArtisanJob($discoveredArtisanJob->jobClassName);
 
             Artisan::command($discoveredArtisanJob->commandSignature, function () use ($artisanJob) {
