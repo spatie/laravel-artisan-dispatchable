@@ -17,8 +17,7 @@ class DiscoveredArtisanJob
         public string $jobClassName,
         public string $commandSignature,
         public string $commandDescription
-    )
-    {
+    ) {
     }
 
     public function toArray(): array
