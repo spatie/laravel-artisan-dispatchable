@@ -16,7 +16,8 @@ class DiscoveredArtisanJob
     public function __construct(
         public string $jobClassName,
         public string $commandSignature,
-        public string $commandDescription)
+        public string $commandDescription
+    )
     {
     }
 
