@@ -4,20 +4,20 @@ namespace Spatie\ArtisanDispatchable;
 
 class DiscoveredArtisanJob
 {
-    public string $jobClassName;
-
-    public string $commandSignature;
-
     public static function fromCachedProperties(array $cachedProperties): static
     {
-        return new static($cachedProperties['jobClassName'], $cachedProperties['commandSignature']);
+        return new static(
+            $cachedProperties['jobClassName'],
+            $cachedProperties['commandSignature'],
+            $cachedProperties['commandDescription'],
+        );
     }
 
-    public function __construct(string $jobClassName, string $commandSignature)
+    public function __construct(
+        public string $jobClassName,
+        public string $commandSignature,
+        public string $commandDescription)
     {
-        $this->jobClassName = $jobClassName;
-
-        $this->commandSignature = $commandSignature;
     }
 
     public function toArray(): array
@@ -25,6 +25,7 @@ class DiscoveredArtisanJob
         return [
             'jobClassName' => $this->jobClassName,
             'commandSignature' => $this->commandSignature,
+            'commandDescription' => $this->commandDescription,
         ];
     }
 }

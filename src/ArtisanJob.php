@@ -28,6 +28,15 @@ class ArtisanJob
         return Str::beforeLast(Str::kebab($shortClassName), '-job');
     }
 
+    public function getCommandDescription(): string
+    {
+        $reflectionClass = new ReflectionClass($this->jobClassName);
+
+        $defaultProperties = $reflectionClass->getDefaultProperties();
+
+        return $defaultProperties['artisanDescription'] ?? "Execute job {$this->jobClassName}";
+    }
+
     protected function getOptionString(): string
     {
         $parameters = (new ReflectionClass($this->jobClassName))
@@ -39,8 +48,8 @@ class ArtisanJob
         }
 
         return collect($parameters)
-            ->map(fn (ReflectionParameter $parameter) => $parameter->name)
-            ->map(fn (string $argumentName) => '{--' . Str::camel($argumentName) . '=}')
+            ->map(fn(ReflectionParameter $parameter) => $parameter->name)
+            ->map(fn(string $argumentName) => '{--' . Str::camel($argumentName) . '=}')
             ->implode(' ');
     }
 

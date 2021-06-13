@@ -3,5 +3,6 @@
   array (
     'jobClassName' => 'Tests\\TestClasses\\Jobs\\CacheTestJobs\\StringTestJob',
     'commandSignature' => 'string-test {--myString=} {--anotherString=}',
+    'commandDescription' => 'This is the description',
   ),
 );
