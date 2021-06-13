@@ -24,15 +24,16 @@ class ArtisanDispatchableServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
-        $artisanJobs = (new ArtisanJobsRepository())->getAll();
+        (new ArtisanJobsRepository())
+            ->getAll()
+            ->each(function (DiscoveredArtisanJob $discoveredArtisanJob) {
 
-        collect($artisanJobs)->each(function (DiscoveredArtisanJob $discoveredArtisanJob) {
-            $artisanJob = new ArtisanJob($discoveredArtisanJob->jobClassName);
+                Artisan::command($discoveredArtisanJob->commandSignature, function () use ($discoveredArtisanJob) {
+                    $artisanJob = new ArtisanJob($discoveredArtisanJob->jobClassName);
 
-            Artisan::command($discoveredArtisanJob->commandSignature, function () use ($artisanJob) {
-                /** @var $this ClosureCommand */
-                $artisanJob->handleCommand($this);
+                    /** @var $this ClosureCommand */
+                    $artisanJob->handleCommand($this);
+                });
             });
-        });
     }
 }
