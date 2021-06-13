@@ -55,6 +55,7 @@ class DiscoverArtisanJobs
     {
         if (empty($this->directories)) {
             ray('nothing')->red();
+
             return new Collection();
         }
 
