@@ -7,11 +7,11 @@ use Spatie\ArtisanDispatchable\ArtisanJobsRepository;
 use Spatie\ArtisanDispatchable\Exceptions\ModelNotFound;
 use Spatie\ArtisanDispatchable\Exceptions\RequiredOptionMissing;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
-use Tests\TestClasses\Jobs\BasicTestJob;
-use Tests\TestClasses\Jobs\BooleanTestJob;
-use Tests\TestClasses\Jobs\IntegerTestJob;
-use Tests\TestClasses\Jobs\ModelTestJob;
-use Tests\TestClasses\Jobs\StringTestJob;
+use Tests\TestClasses\Jobs\IntegrationTestJobs\BasicTestJob;
+use Tests\TestClasses\Jobs\IntegrationTestJobs\BooleanTestJob;
+use Tests\TestClasses\Jobs\IntegrationTestJobs\IntegerTestJob;
+use Tests\TestClasses\Jobs\IntegrationTestJobs\ModelTestJob;
+use Tests\TestClasses\Jobs\IntegrationTestJobs\StringTestJob;
 use Tests\TestClasses\Models\TestModel;
 
 class IntegrationTest extends TestCase
@@ -22,8 +22,10 @@ class IntegrationTest extends TestCase
 
         ray()->newScreen($this->getName());
 
-        config()->set('artisan-dispatchable.auto_discover_dispatchable_jobs', [$this->getJobsDirectory()]);
-        config()->set('artisan-dispatchable.auto_discover_base_path', $this->getTestDirectory());
+        config()->set(
+            'artisan-dispatchable.auto_discover_dispatchable_jobs',
+            [$this->getJobsDirectory('IntegrationTestJobs')]
+        );
 
         (new ArtisanJobsRepository())->registerAll();
     }

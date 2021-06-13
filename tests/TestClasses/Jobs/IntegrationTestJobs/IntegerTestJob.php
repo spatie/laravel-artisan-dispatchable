@@ -1,6 +1,8 @@
 <?php
 
-namespace Tests\TestClasses\Jobs;
+namespace Tests\TestClasses\Jobs\IntegrationTestJobs;
+
+use Tests\TestClasses\Jobs\BaseTestJob;
 
 class IntegerTestJob extends BaseTestJob
 {

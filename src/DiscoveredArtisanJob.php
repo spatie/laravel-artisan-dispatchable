@@ -10,7 +10,7 @@ class DiscoveredArtisanJob
 
     public static function fromCachedProperties(array $cachedProperties): static
     {
-        return new static($cachedProperties['jobClassName'], $cachedProperties['commandProperties']);
+        return new static($cachedProperties['jobClassName'], $cachedProperties['commandSignature']);
     }
 
     public function __construct(string $jobClassName, string $commandSignature)

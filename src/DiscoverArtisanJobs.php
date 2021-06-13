@@ -54,6 +54,7 @@ class DiscoverArtisanJobs
     public function getArtisanDispatchableJobs(): Collection
     {
         if (empty($this->directories)) {
+            ray('nothing')->red();
             return new Collection();
         }
 
@@ -68,7 +69,8 @@ class DiscoverArtisanJobs
             ->map(fn(string $className) => new DiscoveredArtisanJob(
                 $className,
                 (new ArtisanJob($className))->getFullCommand(),
-            ));
+            ))
+            ->values();
     }
 
     protected function fullQualifiedClassNameFromFile(SplFileInfo $file): string

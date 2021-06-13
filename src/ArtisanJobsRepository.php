@@ -34,6 +34,11 @@ class ArtisanJobsRepository
                 });
         }
 
+        return $this->getUnCachedDispatchableJobs();
+    }
+
+    public function getUnCachedDispatchableJobs(): Collection
+    {
         return (new DiscoverArtisanJobs())
             ->within(config('artisan-dispatchable.auto_discover_dispatchable_jobs'))
             ->useBasePath(config('artisan-dispatchable.auto_discover_base_path'))

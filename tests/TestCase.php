@@ -20,11 +20,7 @@ class TestCase extends Orchestra
 
         ray()->newScreen($this->getName());
 
-        $cached = config('artisan-dispatchable.cache_file');
-
-        if (file_exists($cached)) {
-            unlink($cached);
-        }
+        $this->deleteCachedJobsFile();
 
         Factory::guessFactoryNamesUsing(
             fn (string $modelName) => 'Tests\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
@@ -62,8 +58,19 @@ class TestCase extends Orchestra
         return Str::replaceLast('tests', '', __DIR__);
     }
 
-    public function getJobsDirectory(): string
+    public function getJobsDirectory(string $subDirectoryName): string
     {
-        return __DIR__ . '/TestClasses/Jobs';
+        return __DIR__ . "/TestClasses/Jobs/{$subDirectoryName}";
+    }
+
+    protected function deleteCachedJobsFile()
+    {
+        $cache = config('artisan-dispatchable.cache_file');
+
+        if (file_exists($cache)) {
+            unlink($cache);
+        }
+
+        config()->set('artisan-dispatchable.auto_discover_base_path', $this->getTestDirectory());
     }
 }
