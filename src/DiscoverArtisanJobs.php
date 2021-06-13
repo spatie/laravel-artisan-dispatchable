@@ -2,6 +2,7 @@
 
 namespace Spatie\ArtisanDispatchable;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
 use SplFileInfo;
@@ -50,10 +51,10 @@ class DiscoverArtisanJobs
         return $this;
     }
 
-    public function getArtisanDispatchableJobs(): array
+    public function getArtisanDispatchableJobs(): Collection
     {
         if (empty($this->directories)) {
-            return [];
+            return new Collection();
         }
 
         $files = (new Finder())->files()->in($this->directories);
@@ -64,7 +65,10 @@ class DiscoverArtisanJobs
             ->filter(function (string $eventHandlerClass) {
                 return is_subclass_of($eventHandlerClass, ArtisanDispatchable::class);
             })
-            ->toArray();
+            ->map(fn(string $className) => new DiscoveredArtisanJob(
+                $className,
+                (new ArtisanJob($className))->getFullCommand(),
+            ));
     }
 
     protected function fullQualifiedClassNameFromFile(SplFileInfo $file): string

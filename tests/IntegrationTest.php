@@ -25,11 +25,7 @@ class IntegrationTest extends TestCase
         config()->set('artisan-dispatchable.auto_discover_dispatchable_jobs', [$this->getJobsDirectory()]);
         config()->set('artisan-dispatchable.auto_discover_base_path', $this->getTestDirectory());
 
-        $artisanJobs = (new ArtisanJobsRepository())->getAll();
-
-        collect($artisanJobs)->each(function (string $className) {
-            (new ArtisanJob($className))->register();
-        });
+        (new ArtisanJobsRepository())->registerAll();
     }
 
     /** @test */

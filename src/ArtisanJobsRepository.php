@@ -2,14 +2,36 @@
 
 namespace Spatie\ArtisanDispatchable;
 
+use Illuminate\Foundation\Console\ClosureCommand;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Artisan;
+
 class ArtisanJobsRepository
 {
-    public function getAll(): array
+    public function registerAll(): void
+    {
+        $this
+            ->getAll()
+            ->each(function (DiscoveredArtisanJob $discoveredArtisanJob) {
+
+                $artisanJob = new ArtisanJob($discoveredArtisanJob->jobClassName);
+
+                Artisan::command($discoveredArtisanJob->commandSignature, function () use ($artisanJob) {
+                    /** @var $this ClosureCommand */
+                    $artisanJob->handleCommand($this);
+                });
+            });
+    }
+
+    public function getAll(): Collection
     {
         $cachedDispatchableJobs = $this->getCachedDispatchableJobs();
 
-        if (! is_null($cachedDispatchableJobs)) {
-            return $cachedDispatchableJobs;
+        if (!is_null($cachedDispatchableJobs)) {
+            return collect($cachedDispatchableJobs)
+                ->map(function (array $jobProperties) {
+                    return DiscoveredArtisanJob::fromCachedProperties($jobProperties);
+                });
         }
 
         return (new DiscoverArtisanJobs())
@@ -23,7 +45,7 @@ class ArtisanJobsRepository
     {
         $cachedDispatchableJobs = config('artisan-dispatchable.cache_file');
 
-        if (! file_exists($cachedDispatchableJobs)) {
+        if (!file_exists($cachedDispatchableJobs)) {
             return null;
         }
 

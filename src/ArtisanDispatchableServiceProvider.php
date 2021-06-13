@@ -2,6 +2,8 @@
 
 namespace Spatie\ArtisanDispatchable;
 
+use Illuminate\Foundation\Console\ClosureCommand;
+use Illuminate\Support\Facades\Artisan;
 use Spatie\ArtisanDispatchable\Console\CacheArtisanDispatchableJobsCommand;
 use Spatie\ArtisanDispatchable\Console\ClearArtisanDispatchableJobsCommand;
 use Spatie\LaravelPackageTools\Package;
@@ -24,8 +26,14 @@ class ArtisanDispatchableServiceProvider extends PackageServiceProvider
     {
         $artisanJobs = (new ArtisanJobsRepository())->getAll();
 
-        collect($artisanJobs)->each(function (string $className) {
-            (new ArtisanJob($className))->register();
+        collect($artisanJobs)->each(function (DiscoveredArtisanJob $discoveredArtisanJob) {
+
+            $artisanJob = new ArtisanJob($discoveredArtisanJob->jobClassName);
+
+            Artisan::command($discoveredArtisanJob->commandSignature, function () use ($artisanJob) {
+                /** @var $this ClosureCommand */
+                $artisanJob->handleCommand($this);
+            });
         });
     }
 }

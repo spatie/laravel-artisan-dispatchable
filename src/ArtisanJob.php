@@ -15,16 +15,7 @@ class ArtisanJob
 {
     public function __construct(protected string $jobClassName)
     {
-    }
 
-    public function register(): void
-    {
-        $artisanJob = $this;
-        ray($this->getFullCommand());
-        Artisan::command($this->getFullCommand(), function () use ($artisanJob) {
-            /** @var $this ClosureCommand */
-            $artisanJob->handleCommand($this);
-        });
     }
 
     public function getFullCommand(): string
