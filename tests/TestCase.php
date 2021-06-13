@@ -18,6 +18,14 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
+        ray()->newScreen($this->getName());
+
+        $cached = config('artisan-dispatchable.cache_file');
+
+        if (file_exists($cached)) {
+            unlink($cached);
+        }
+
         Factory::guessFactoryNamesUsing(
             fn (string $modelName) => 'Tests\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );

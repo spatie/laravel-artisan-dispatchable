@@ -41,8 +41,8 @@ class ArtisanJob
         }
 
         return collect($parameters)
-            ->map(fn (ReflectionParameter $parameter) => $parameter->name)
-            ->map(fn (string $argumentName) => '{--' . Str::camel($argumentName) . '=}')
+            ->map(fn(ReflectionParameter $parameter) => $parameter->name)
+            ->map(fn(string $argumentName) => '{--' . Str::camel($argumentName) . '=}')
             ->implode(' ');
     }
 
@@ -88,6 +88,7 @@ class ArtisanJob
                 }
 
                 return $value;
-            })->all();
+            })
+            ->all();
     }
 }
