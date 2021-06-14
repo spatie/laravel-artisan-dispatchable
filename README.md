@@ -122,6 +122,8 @@ php artisan my-job
 
 This job will not be queued, but will be immediately executed inside the executed artisan command. 
 
+### Queueing jobs via Artisan
+
 If you want to put your job on the queue instead of executing it immediately, add the `queued`.
 
 ```bash
