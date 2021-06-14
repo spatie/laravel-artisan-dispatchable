@@ -33,6 +33,11 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
 
+        - name: Create database
+          run: |
+            sudo /etc/init.d/mysql start
+            mysql  -u root -proot -e 'CREATE DATABASE IF NOT EXISTS laravel_artisan_dispatchable;'
+
       - name: Setup problem matchers
         run: |
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
