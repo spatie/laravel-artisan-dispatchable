@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Spatie\ArtisanDispatchable\ArtisanDispatchableServiceProvider;
 use Spatie\LaravelRay\RayServiceProvider;
+use Tests\TestClasses\Jobs\IntegrationTestJobs\BasicTestJob;
 
 class TestCase extends Orchestra
 {
@@ -72,5 +73,15 @@ class TestCase extends Orchestra
         }
 
         config()->set('artisan-dispatchable.auto_discover_base_path', $this->getTestDirectory());
+    }
+
+    protected function assertJobHandled(string $expectedHandledClassName)
+    {
+        $this->assertInstanceOf($expectedHandledClassName,  self::$handledJob);
+    }
+
+    protected function assertJobNotHandled()
+    {
+        $this->assertNull(self::$handledJob);
     }
 }

@@ -41,15 +41,12 @@ class ArtisanJob
     {
         $parameters = (new ReflectionClass($this->jobClassName))
             ->getConstructor()
-            ?->getParameters();
-
-        if (is_null($parameters)) {
-            return '';
-        }
+            ?->getParameters() ?? [];
 
         return collect($parameters)
             ->map(fn (ReflectionParameter $parameter) => $parameter->name)
             ->map(fn (string $argumentName) => '{--' . Str::camel($argumentName) . '=}')
+            ->add('{--queued}')
             ->implode(' ');
     }
 
@@ -59,7 +56,9 @@ class ArtisanJob
 
         $job = new $this->jobClassName(...$parameters);
 
-        $job->handle();
+        $command->option('queued')
+            ? dispatch($job)
+            : dispatch_sync($job);
     }
 
     protected function constructorValues(ClosureCommand $command): array

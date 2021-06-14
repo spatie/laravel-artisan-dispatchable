@@ -120,7 +120,13 @@ This allows the job to be executed via Artisan.
 php artisan my-job
 ```
 
-This job will not be queued, but will be immediately executed inside the executed artisan command.
+This job will not be queued, but will be immediately executed inside the executed artisan command. 
+
+If you want to put your job on the queue instead of executing it immediately, add the `queued`.
+
+```bash
+php artisan my-job --queued
+```
 
 ### Passing arguments to a job
 

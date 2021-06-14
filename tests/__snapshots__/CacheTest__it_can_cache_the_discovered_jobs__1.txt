@@ -2,7 +2,7 @@
   0 => 
   array (
     'jobClassName' => 'Tests\\TestClasses\\Jobs\\CacheTestJobs\\StringTestJob',
-    'commandSignature' => 'string-test {--myString=} {--anotherString=}',
+    'commandSignature' => 'string-test {--myString=} {--anotherString=} {--queued}',
     'commandDescription' => 'This is the description',
   ),
 );

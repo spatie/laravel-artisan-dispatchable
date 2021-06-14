@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Queue;
 use Spatie\ArtisanDispatchable\ArtisanJobsRepository;
 use Spatie\ArtisanDispatchable\Exceptions\ModelNotFound;
 use Spatie\ArtisanDispatchable\Exceptions\RequiredOptionMissing;
@@ -30,13 +32,27 @@ class IntegrationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_call_a_job()
+    public function it_can_handle_a_job_immediately()
     {
         $this
             ->artisan('basic-test')
             ->assertExitCode(0);
 
-        $this->assertInstanceOf(BasicTestJob::class, self::$handledJob);
+        $this->assertJobHandled(BasicTestJob::class);
+    }
+
+    /** @test */
+    public function it_can_put_a_job_on_the_queue()
+    {
+        Bus::fake();
+
+        $this
+            ->artisan('basic-test --queued')
+            ->assertExitCode(0);
+
+        Bus::assertDispatched(BasicTestJob::class);
+        $this->assertJobNotHandled();
+
     }
 
     /** @test */
@@ -56,7 +72,7 @@ class IntegrationTest extends TestCase
             ->artisan("model-test --testModel={$testModel->id}")
             ->assertExitCode(0);
 
-        $this->assertInstanceOf(ModelTestJob::class, self::$handledJob);
+        $this->assertJobHandled(ModelTestJob::class);
 
         $this->assertEquals($testModel->id, self::$handledJob->testModel->id);
     }
@@ -86,7 +102,7 @@ class IntegrationTest extends TestCase
             ->artisan("string-test --myString='first string' --anotherString='another string'")
             ->assertExitCode(0);
 
-        $this->assertInstanceOf(StringTestJob::class, self::$handledJob);
+        $this->assertJobHandled(StringTestJob::class);
 
         $this->assertEquals('first string', self::$handledJob->myString);
         $this->assertEquals('another string', self::$handledJob->anotherString);
@@ -99,7 +115,7 @@ class IntegrationTest extends TestCase
             ->artisan("integer-test --myInteger=1234")
             ->assertExitCode(0);
 
-        $this->assertInstanceOf(IntegerTestJob::class, self::$handledJob);
+        $this->assertJobHandled(IntegerTestJob::class);
         $this->assertEquals(1234, self::$handledJob->myInteger);
     }
 
@@ -110,8 +126,9 @@ class IntegrationTest extends TestCase
             ->artisan("boolean-test --firstBoolean=1 --secondBoolean=0")
             ->assertExitCode(0);
 
-        $this->assertInstanceOf(BooleanTestJob::class, self::$handledJob);
+        $this->assertJobHandled(BooleanTestJob::class);
         $this->assertTrue(self::$handledJob->firstBoolean);
         $this->assertFalse(self::$handledJob->secondBoolean);
     }
+
 }
