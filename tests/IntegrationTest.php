@@ -9,6 +9,7 @@ use Spatie\ArtisanDispatchable\Exceptions\RequiredOptionMissing;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\BasicTestJob;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\BooleanTestJob;
+use Tests\TestClasses\Jobs\IntegrationTestJobs\CustomNameTestJob;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\IntegerTestJob;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\ModelTestJob;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\StringTestJob;
@@ -125,5 +126,15 @@ class IntegrationTest extends TestCase
         $this->assertJobHandled(BooleanTestJob::class);
         $this->assertTrue(self::$handledJob->firstBoolean);
         $this->assertFalse(self::$handledJob->secondBoolean);
+    }
+
+    /** @test */
+    public function it_can_use_handle_a_custom_name()
+    {
+        $this
+            ->artisan("custom:name")
+            ->assertExitCode(0);
+
+        $this->assertJobHandled(CustomNameTestJob::class);
     }
 }

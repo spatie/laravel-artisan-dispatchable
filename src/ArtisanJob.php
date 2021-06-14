@@ -23,6 +23,10 @@ class ArtisanJob
 
     protected function getCommandName(): string
     {
+        if ($name = $this->getDefaultForProperty('artisanName')) {
+            return $name;
+        }
+
         $shortClassName = class_basename($this->jobClassName);
 
         return Str::of($shortClassName)->kebab()->beforeLast('-job');
@@ -30,11 +34,7 @@ class ArtisanJob
 
     public function getCommandDescription(): string
     {
-        $reflectionClass = new ReflectionClass($this->jobClassName);
-
-        $defaultProperties = $reflectionClass->getDefaultProperties();
-
-        return $defaultProperties['artisanDescription'] ?? "Execute job {$this->jobClassName}";
+        return $this->getDefaultForProperty('artisanDescription') ?? "Execute job {$this->jobClassName}";
     }
 
     protected function getOptionString(): string
@@ -96,5 +96,14 @@ class ArtisanJob
                 return $value;
             })
             ->all();
+    }
+
+    protected function getDefaultForProperty(string $name): mixed
+    {
+        $reflectionClass = new ReflectionClass($this->jobClassName);
+
+        $defaultProperties = $reflectionClass->getDefaultProperties();
+
+        return $defaultProperties[$name] ?? null;
     }
 }

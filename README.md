@@ -101,9 +101,10 @@ return [
 All you need to do is let your job implement the empty `ArtisanDispatchable` interface.
 
 ```php
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
 
-class ProcessPodcast implements ArtisanDispatchable
+class ProcessPodcast implements ShouldQueue, ArtisanDispatchable
 {
     public function handle()
     {
@@ -133,9 +134,11 @@ php artisan process-podcast --queued
 If your job has constructor arguments, you may pass those arguments via options on the artisan command.
 
 ```php
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
 
-class ProcessPodcast implements ArtisanDispatchable
+
+class ProcessPodcast implements ShouldQueue, ArtisanDispatchable
 {
     public function __construct(
         string $myFirstArgument, 
@@ -160,9 +163,10 @@ If your job argument is an eloquent model, you may pass the id of the model to t
 
 ```php
 use App\Models\Podcast;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
 
-class ProcessPodcast implements ArtisanDispatchable
+class ProcessPodcast implements ShouldQueue, ArtisanDispatchable
 {
     public function __construct(
         Podcast $podcast, 
@@ -181,16 +185,44 @@ Here's how you can execute this job with podcast id `1234`
 php artisan process-podcast --podcast="1234"
 ```
 
-### Customizing the description
+### Customizing the name of the command
+
+By default, the artisan command name of a job, is the base name of job in kebab-case.
+
+You can set a custom name by setting a property named `artisanName` on your job.
+
+```php
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
+
+class ProcessPodcast implements ShouldQueue, ArtisanDispatchable
+{
+     public string $artisanName = 'my-app:process-my-podcast';
+
+    public function handle()
+    {
+        // perform some work...
+    }
+}
+```
+
+This job can now be executed with this command:
+
+```bash
+php artisan my-app:process-my-podcast
+```
+
+### Customizing the description of the command
 
 To add a description to the lists of artisan command, add a property `$artisanDescription` to your job.
 
 ```php
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
 
-class ProcessPodcast implements ArtisanDispatchable
+class ProcessPodcast implements ShouldQueue, ArtisanDispatchable
 {
-     public $artisanDescription = 'This a custom description';
+     public string $artisanDescription = 'This a custom description';
 
     public function handle()
     {
