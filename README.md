@@ -12,7 +12,7 @@ All you need to do is let your job implement the empty `ArtisanDispatchable` int
 ```php
 use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
 
-class MyJob implements ArtisanDispatchable
+class ProcessPodcast implements ArtisanDispatchable
 {
     public function handle()
     {
@@ -24,7 +24,7 @@ class MyJob implements ArtisanDispatchable
 This allows the job to be executed via Artisan. 
 
 ```bash
-php artisan my-job
+php artisan process-podcast
 ```
 
 By default, the handle method of the job will be executed immediately.
@@ -40,7 +40,7 @@ If you have a task that needs to run every minute and needs more than a minutes 
 Long-running tasks can be performed by jobs. Laravel even has [the ability to schedule queued jobs](https://laravel.com/docs/master/scheduling#scheduling-queued-jobs). This way those tasks will not block the scheduler.
 
 ```php
-$schedule->job(new MyJob)->everyFiveMinutes();
+$schedule->job(new ProcessPodcast)->everyFiveMinutes();
 ````
 
  The downside of this approach is that you cannot run that job via Artisan anymore. You have to choose between using an artisan command / blocking the scheduler on one hand, and job / not blocking the scheduler on the other hand.
@@ -105,7 +105,7 @@ All you need to do is let your job implement the empty `ArtisanDispatchable` int
 ```php
 use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
 
-class MyJob implements ArtisanDispatchable
+class ProcessPodcast implements ArtisanDispatchable
 {
     public function handle()
     {
@@ -117,7 +117,7 @@ class MyJob implements ArtisanDispatchable
 This allows the job to be executed via Artisan.
 
 ```bash
-php artisan my-job
+php artisan process-podcast
 ```
 
 This job will not be queued, but will be immediately executed inside the executed artisan command. 
@@ -127,7 +127,7 @@ This job will not be queued, but will be immediately executed inside the execute
 If you want to put your job on the queue instead of executing it immediately, add the `queued`.
 
 ```bash
-php artisan my-job --queued
+php artisan process-podcast --queued
 ```
 
 ### Passing arguments to a job
@@ -137,7 +137,7 @@ If your job has constructor arguments, you may pass those arguments via options 
 ```php
 use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
 
-class MyJob implements ArtisanDispatchable
+class ProcessPodcast implements ArtisanDispatchable
 {
     public function __construct(
         string $myFirstArgument, 
@@ -153,7 +153,7 @@ class MyJob implements ArtisanDispatchable
 Via artisan, you can call the job like this
 
 ```bash
-php artisan my-job --my-first-argument="My string value"
+php artisan process-podcast --my-first-argument="My string value"
 ```
 
 ### Using Eloquent models as arguments
@@ -161,13 +161,13 @@ php artisan my-job --my-first-argument="My string value"
 If your argument is an eloquent model, you may pass the id of the model to the artisan command option. 
 
 ```php
-use App\Models\User;
+use App\Models\Podcast;
 use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
 
-class MyJob implements ArtisanDispatchable
+class ProcessPodcast implements ArtisanDispatchable
 {
     public function __construct(
-        User $user, 
+        Podcast $podcast, 
     ) {}
 
     public function handle()
@@ -177,10 +177,10 @@ class MyJob implements ArtisanDispatchable
 }
 ```
 
-Here's how you can execute this job with user id `1234`
+Here's how you can execute this job with podcast id `1234`
 
 ```bash
-php artisan my-job --user="1234"
+php artisan process-podcast --podcast="1234"
 ```
 
 ### Customizing the description
@@ -188,10 +188,9 @@ php artisan my-job --user="1234"
 To add a description to the lists of artisan command, add a property `$artisanDescription` to your job.
 
 ```php
-use App\Models\User;
 use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
 
-class MyJob implements ArtisanDispatchable
+class ProcessPodcast implements ArtisanDispatchable
 {
      public $artisanDescription = 'This a custom description';
 
@@ -208,7 +207,7 @@ This package can automatically discover jobs that implement `ArtisanDispatchable
 
 In a production environment, you probably don't want to loop through all classes on every request. The package contains a command to cache all discovered jobs.
 
-```
+```bash
 php artisan artisan-dispatchable:cache-artisan-dispatchable-jobs
 ```
 
@@ -216,10 +215,9 @@ You probably want to call that command during your deployment of your app. This 
 
 Should you want to clear the cache, you can execute this command:
 
-```php
-artisan-dispatchable:clear-artisan-dispatchable-jobs
+```bash
+php artisan artisan-dispatchable:clear-artisan-dispatchable-jobs
 ```
-
 
 ## Testing
 
