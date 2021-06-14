@@ -10,9 +10,10 @@ This package can register jobs as Artisan commands.
 All you need to do is let your job implement the empty `ArtisanDispatchable` interface.
 
 ```php
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
 
-class ProcessPodcast implements ArtisanDispatchable
+class ProcessPodcast implements ShouldQueue, ArtisanDispatchable
 {
     public function handle()
     {
