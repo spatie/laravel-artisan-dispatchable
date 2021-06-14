@@ -81,14 +81,12 @@ class DiscoverArtisanJobs
 
     protected function fullQualifiedClassNameFromFile(SplFileInfo $file): string
     {
-        $class = ucfirst(trim(Str::replaceFirst($this->basePath, '', $file->getRealPath()), DIRECTORY_SEPARATOR));
-
-        $class = str_replace(
-            [DIRECTORY_SEPARATOR, 'App\\'],
-            ['\\', app()->getNamespace()],
-            ucfirst(Str::replaceLast('.php', '', $class))
-        );
-
-        return $this->rootNamespace.$class;
+        return Str::of($file->getRealPath())
+            ->replaceFirst($this->basePath, '')
+            ->trim(DIRECTORY_SEPARATOR)
+            ->ucfirst()
+            ->replaceLast('.php', '')
+            ->replace([DIRECTORY_SEPARATOR, 'App\\'], ['\\', app()->getNamespace()])
+            ->prepend($this->rootNamespace);
     }
 }
