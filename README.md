@@ -29,6 +29,24 @@ php artisan my-job
 
 By default, the handle method of the job will be executed immediately.
 
+## Why we created this package
+
+Laravel schedules will perform all the tasks that need to happen at a given moment sequentially. So no tasks will run in parallel. 
+
+When you add a scheduled task to [Laravel's scheduler](https://laravel.com/docs/master/scheduling#introduction), it should perform it's work as fast as possible, so no other tasks will have to wait.
+
+If you have a task that needs to run every minute and needs more than a minutes to perform it's work, you should not use a simple Artisan command, as this will result in the delay of all other tasks.
+
+Long-running tasks can be performed by jobs. Laravel even has [the ability to schedule queued jobs](https://laravel.com/docs/master/scheduling#scheduling-queued-jobs). This way those tasks will not block the scheduler.
+
+```php
+$schedule->job(new MyJob)->everyFiveMinutes();
+````
+
+ The downside of this approach is that you cannot run that job via Artisan anymore. You have to choose between using an artisan command / blocking the scheduler on one hand, and job / not blocking the scheduler on the other hand.
+
+Using our package, you don't have to make that choice anymore. When letting your job implement `Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable`, you will not block the scheduler and can still execute the logic via Artisan.
+
 ## Support us
 
 [<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-artisan-dispatchable.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-artisan-dispatchable)
@@ -82,10 +100,118 @@ return [
 
 ## Usage
 
+All you need to do is let your job implement the empty `ArtisanDispatchable` interface.
+
 ```php
-$laravel-artisan-dispatchable = new Spatie\ArtisanDispatchable();
-echo $laravel-artisan-dispatchable->echoPhrase('Hello, Spatie!');
+use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
+
+class MyJob implements ArtisanDispatchable
+{
+    public function handle()
+    {
+        // perform some work...
+    }
+}
 ```
+
+This allows the job to be executed via Artisan.
+
+```bash
+php artisan my-job
+```
+
+This job will not be queued, but will be immediately executed inside the executed artisan command.
+
+### Passing arguments to a job
+
+If your job has constructor arguments, you may pass those arguments via options on the artisan command.
+
+```php
+use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
+
+class MyJob implements ArtisanDispatchable
+{
+    public function __construct(
+        string $myFirstArgument, 
+    ) {}
+
+    public function handle()
+    {
+        // perform some work...
+    }
+}
+```
+
+Via artisan, you can call the job like this
+
+```bash
+php artisan my-job --my-first-argument="My string value"
+```
+
+### Using Eloquent models as arguments
+
+If your argument is an eloquent model, you may pass the id of the model to the artisan command option. 
+
+```php
+use App\Models\User;
+use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
+
+class MyJob implements ArtisanDispatchable
+{
+    public function __construct(
+        User $user, 
+    ) {}
+
+    public function handle()
+    {
+        // perform some work...
+    }
+}
+```
+
+Here's how you can execute this job with user id `1234`
+
+```bash
+php artisan my-job --user="1234"
+```
+
+### Customizing the description
+
+To add a description to the lists of artisan command, add a property `$artisanDescription` to your job.
+
+```php
+use App\Models\User;
+use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
+
+class MyJob implements ArtisanDispatchable
+{
+     public $artisanDescription = 'This a custom description';
+
+    public function handle()
+    {
+        // perform some work...
+    }
+}
+```
+
+### Caching discovered jobs
+
+This package can automatically discover jobs that implement `ArtisanDispatchable` and what their artisan command should be through looping through all classes and performing some reflection.  In a local environment this is perfect, as the performance hit is not too bad, and you don't have to do anything special besides letting your job implement `ArtisanDispatchable`.
+
+In a production environment, you probably don't want to loop through all classes on every request. The package contains a command to cache all discovered jobs.
+
+```
+php artisan artisan-dispatchable:cache-artisan-dispatchable-jobs
+```
+
+You probably want to call that command during your deployment of your app. This will create cache file at the location specified in the `cache_file` key of the `artisan-dispatchable` config file.
+
+Should you want to clear the cache, you can execute this command:
+
+```php
+artisan-dispatchable:clear-artisan-dispatchable-jobs
+```
+
 
 ## Testing
 

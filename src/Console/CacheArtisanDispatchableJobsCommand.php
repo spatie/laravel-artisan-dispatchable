@@ -11,7 +11,7 @@ class CacheArtisanDispatchableJobsCommand extends Command
 {
     protected $signature = 'artisan-dispatchable:cache-artisan-dispatchable-jobs';
 
-    protected $description = 'Cache all auto discovered artisan dispatchable jobs';
+    protected $description = 'Cache all auto-discovered artisan dispatchable jobs';
 
     public function handle(Filesystem $files): void
     {
