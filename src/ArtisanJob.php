@@ -25,7 +25,7 @@ class ArtisanJob
     {
         $shortClassName = class_basename($this->jobClassName);
 
-        return Str::beforeLast(Str::kebab($shortClassName), '-job');
+        return Str::of($shortClassName)->kebab()->beforeLast('-job');
     }
 
     public function getCommandDescription(): string
