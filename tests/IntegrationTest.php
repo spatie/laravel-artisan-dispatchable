@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Queue;
 use Spatie\ArtisanDispatchable\ArtisanJobsRepository;
 use Spatie\ArtisanDispatchable\Exceptions\ModelNotFound;
 use Spatie\ArtisanDispatchable\Exceptions\RequiredOptionMissing;
@@ -52,7 +51,6 @@ class IntegrationTest extends TestCase
 
         Bus::assertDispatched(BasicTestJob::class);
         $this->assertJobNotHandled();
-
     }
 
     /** @test */
@@ -130,5 +128,4 @@ class IntegrationTest extends TestCase
         $this->assertTrue(self::$handledJob->firstBoolean);
         $this->assertFalse(self::$handledJob->secondBoolean);
     }
-
 }

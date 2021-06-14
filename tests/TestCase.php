@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Spatie\ArtisanDispatchable\ArtisanDispatchableServiceProvider;
 use Spatie\LaravelRay\RayServiceProvider;
-use Tests\TestClasses\Jobs\IntegrationTestJobs\BasicTestJob;
 
 class TestCase extends Orchestra
 {
