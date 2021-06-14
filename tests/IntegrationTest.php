@@ -20,8 +20,6 @@ class IntegrationTest extends TestCase
     {
         parent::setUp();
 
-        ray()->newScreen($this->getName());
-
         config()->set(
             'artisan-dispatchable.auto_discover_dispatchable_jobs',
             [$this->getJobsDirectory('IntegrationTestJobs')]

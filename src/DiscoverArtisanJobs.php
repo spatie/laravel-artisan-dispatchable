@@ -54,8 +54,6 @@ class DiscoverArtisanJobs
     public function getArtisanDispatchableJobs(): Collection
     {
         if (empty($this->directories)) {
-            ray('nothing')->red();
-
             return new Collection();
         }
 
