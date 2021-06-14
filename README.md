@@ -28,8 +28,6 @@ This allows the job to be executed via Artisan.
 php artisan process-podcast
 ```
 
-By default, the handle method of the job will be executed immediately.
-
 ## Why we created this package
 
 [Laravel's scheduler](https://laravel.com/docs/master/scheduling#introduction) will perform all tasks sequentially.  When you add a scheduled task to the scheduler, the task should perform its work as fast as possible, so no other tasks will have to wait.
