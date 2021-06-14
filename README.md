@@ -31,19 +31,17 @@ By default, the handle method of the job will be executed immediately.
 
 ## Why we created this package
 
-Laravel schedules will perform all the tasks that need to happen at a given moment sequentially. So no tasks will run in parallel. 
+[Laravel's scheduler](https://laravel.com/docs/master/scheduling#introduction) will perform all tasks sequentially.  When you add a scheduled task to the scheduler, the task should perform its work as fast as possible, so no other tasks will have to wait.
 
-When you add a scheduled task to [Laravel's scheduler](https://laravel.com/docs/master/scheduling#introduction), it should perform it's work as fast as possible, so no other tasks will have to wait.
+If you have a task that needs to run every minute and its runtime is close to a minute, you should not use a simple Artisan command, as this will result in the delay of all other minute-ly tasks.
 
-If you have a task that needs to run every minute and needs more than a minutes to perform it's work, you should not use a simple Artisan command, as this will result in the delay of all other tasks.
-
-Long-running tasks can be performed by jobs. Laravel even has [the ability to schedule queued jobs](https://laravel.com/docs/master/scheduling#scheduling-queued-jobs). This way those tasks will not block the scheduler.
+Long-running tasks should be performed by jobs that perform their work on the queue. Laravel has [the ability to schedule queued jobs](https://laravel.com/docs/master/scheduling#scheduling-queued-jobs). This way, those tasks will not block the scheduler.
 
 ```php
 $schedule->job(new ProcessPodcast)->everyFiveMinutes();
 ````
 
- The downside of this approach is that you cannot run that job via Artisan anymore. You have to choose between using an artisan command / blocking the scheduler on one hand, and job / not blocking the scheduler on the other hand.
+The downside of this approach is that you cannot run that job via Artisan anymore. You have to choose between using an artisan command + blocking the scheduler on the one hand, and job + not blocking the scheduler on the other hand.
 
 Using our package, you don't have to make that choice anymore. When letting your job implement `Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable`, you will not block the scheduler and can still execute the logic via Artisan.
 
@@ -124,7 +122,7 @@ This job will not be queued, but will be immediately executed inside the execute
 
 ### Queueing jobs via Artisan
 
-If you want to put your job on the queue instead of executing it immediately, add the `queued`.
+If you want to put your job on the queue instead of executing it immediately, add the `queued` option.
 
 ```bash
 php artisan process-podcast --queued
@@ -158,7 +156,7 @@ php artisan process-podcast --my-first-argument="My string value"
 
 ### Using Eloquent models as arguments
 
-If your argument is an eloquent model, you may pass the id of the model to the artisan command option. 
+If your job argument is an eloquent model, you may pass the id of the model to the artisan command option. 
 
 ```php
 use App\Models\Podcast;
