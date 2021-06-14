@@ -6,7 +6,7 @@ use Illuminate\Foundation\Console\ClosureCommand;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 
-class ArtisanJobsRepository
+class ArtisanJobRepository
 {
     public function registerAll(): void
     {

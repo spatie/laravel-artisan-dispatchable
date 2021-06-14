@@ -22,6 +22,6 @@ class ArtisanDispatchableServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
-        (new ArtisanJobsRepository())->registerAll();
+        (new ArtisanJobRepository())->registerAll();
     }
 }

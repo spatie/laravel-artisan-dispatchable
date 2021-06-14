@@ -3,7 +3,7 @@
 namespace Tests;
 
 use Illuminate\Support\Facades\Bus;
-use Spatie\ArtisanDispatchable\ArtisanJobsRepository;
+use Spatie\ArtisanDispatchable\ArtisanJobRepository;
 use Spatie\ArtisanDispatchable\Exceptions\ModelNotFound;
 use Spatie\ArtisanDispatchable\Exceptions\RequiredOptionMissing;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
@@ -25,7 +25,7 @@ class IntegrationTest extends TestCase
             [$this->getJobsDirectory('IntegrationTestJobs')]
         );
 
-        (new ArtisanJobsRepository())->registerAll();
+        (new ArtisanJobRepository())->registerAll();
     }
 
     /** @test */

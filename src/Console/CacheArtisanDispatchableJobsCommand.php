@@ -4,7 +4,7 @@ namespace Spatie\ArtisanDispatchable\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Spatie\ArtisanDispatchable\ArtisanJobsRepository;
+use Spatie\ArtisanDispatchable\ArtisanJobRepository;
 use Spatie\ArtisanDispatchable\DiscoveredArtisanJob;
 
 class CacheArtisanDispatchableJobsCommand extends Command
@@ -17,7 +17,7 @@ class CacheArtisanDispatchableJobsCommand extends Command
     {
         $this->info('Caching artisan dispatchable jobs...');
 
-        $artisanJobs = (new ArtisanJobsRepository())
+        $artisanJobs = (new ArtisanJobRepository())
             ->getUnCachedDispatchableJobs()
             ->map(fn (DiscoveredArtisanJob $discoveredArtisanJob) => $discoveredArtisanJob->toArray())
             ->toArray();
