@@ -81,7 +81,7 @@ class ArtisanJob
                     throw RequiredOptionMissing::make($this->getCommandName(), $parameterName);
                 }
 
-                $parameterType = $parameter->getType()->getName();
+                $parameterType = $parameter->getType()?->getName();
 
                 if (is_a($parameterType, Model::class, true)) {
                     $model = $parameterType::find($value);
