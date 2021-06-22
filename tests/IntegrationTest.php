@@ -143,10 +143,10 @@ class IntegrationTest extends TestCase
     public function it_can_accept_an_argument_without_a_type()
     {
         $this
-            ->artisan('argument-without-type-test --testArg=1234')
+            ->artisan('argument-without-type-test --argumentWithoutType=1234')
             ->assertExitCode(0);
 
         $this->assertJobHandled(ArgumentWithoutTypeTestJob::class);
-        $this->assertEquals(1234, self::$handledJob->testArg);
+        $this->assertEquals(1234, self::$handledJob->argumentWithoutType);
     }
 }

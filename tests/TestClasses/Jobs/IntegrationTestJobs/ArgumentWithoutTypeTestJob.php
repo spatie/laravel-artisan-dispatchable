@@ -7,7 +7,7 @@ use Tests\TestClasses\Jobs\BaseTestJob;
 class ArgumentWithoutTypeTestJob extends BaseTestJob
 {
     public function __construct(
-        public $testArg
+        public $argumentWithoutType
     ) {
     }
 }
