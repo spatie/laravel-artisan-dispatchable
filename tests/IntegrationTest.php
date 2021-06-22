@@ -7,6 +7,7 @@ use Spatie\ArtisanDispatchable\ArtisanJobRepository;
 use Spatie\ArtisanDispatchable\Exceptions\ModelNotFound;
 use Spatie\ArtisanDispatchable\Exceptions\RequiredOptionMissing;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
+use Tests\TestClasses\Jobs\IntegrationTestJobs\ArgumentWithoutTypeTestJob;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\BasicTestJob;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\BooleanTestJob;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\CustomNameTestJob;
@@ -136,5 +137,16 @@ class IntegrationTest extends TestCase
             ->assertExitCode(0);
 
         $this->assertJobHandled(CustomNameTestJob::class);
+    }
+
+    /** @test */
+    public function it_can_accept_an_argument_without_a_type()
+    {
+        $this
+            ->artisan('argument-without-type-test --testArg=1234')
+            ->assertExitCode(0);
+
+        $this->assertJobHandled(ArgumentWithoutTypeTestJob::class);
+        $this->assertEquals(1234, self::$handledJob->testArg);
     }
 }
