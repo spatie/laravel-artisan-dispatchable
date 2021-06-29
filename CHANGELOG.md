@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-artisan-dispatchable` will be documented in this file.
 
+## 1.2.0 - 2021-06-29
+
+- add prefix option
+
 ## 1.1.0 - 2021-06-22
 
 - add support for arguments without a type

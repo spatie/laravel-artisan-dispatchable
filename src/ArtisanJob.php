@@ -30,7 +30,6 @@ class ArtisanJob
 
         $shortClassName = class_basename($this->jobClassName);
 
-
         $prefix = config('artisan-dispatchable.command_name_prefix');
         $command = Str::of($shortClassName)->kebab()->beforeLast('-job');
 

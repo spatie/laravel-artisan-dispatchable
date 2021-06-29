@@ -24,7 +24,7 @@ return [
     'cache_file' => storage_path('app/artisan-dispatchable/artisan-dispatchable-jobs.php'),
 
     /**
-     * This value specifies the prefix of the command name, when no custom name is set.
+     * Here you can specify the prefix to be used for all dispatchable jobs.
      */
-    'command_name_prefix' => null,
+    'command_name_prefix' => '',
 ];

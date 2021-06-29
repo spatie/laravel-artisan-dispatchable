@@ -90,6 +90,11 @@ return [
      * Here you can specify where the cache should be stored.
      */
     'cache_file' => storage_path('app/artisan-dispatchable/artisan-dispatchable-jobs.php'),
+
+    /**
+     * Here you can specify the prefix to be used for all dispatchable jobs.
+     */
+    'command_name_prefix' => '',
 ];
 ```
 
@@ -226,6 +231,14 @@ class ProcessPodcast implements ShouldQueue, ArtisanDispatchable
         // perform some work...
     }
 }
+```
+
+### Prefixing all commands
+
+You can specify a prefix in the `command_name_prefix` key of the config file. When this is for example set to `my-custom-prefix`, then you would be able to call `MyDispatchableJob` with this command:
+
+```bash 
+php artisan my-custom-prefix:process-my-podcast
 ```
 
 ### Caching discovered jobs
