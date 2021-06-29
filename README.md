@@ -58,9 +58,8 @@ You can install the package via composer:
 composer require spatie/laravel-artisan-dispatchable
 ```
 
-You can publish and run the migrations with:
+Optionally, you can publish the config file with:
 
-Optionally, uou can publish the config file with:
 ```bash
 php artisan vendor:publish --provider="Spatie\ArtisanDispatchable\ArtisanDispatchableServiceProvider" --tag="artisan-dispatchable-config"
 ```
@@ -216,7 +215,7 @@ php artisan my-app:process-my-podcast
 
 ### Customizing the description of the command
 
-To add a description to the lists of artisan command, add a property `$artisanDescription` to your job.
+To add a description to the list of artisan commands, add a property `$artisanDescription` to your job.
 
 ```php
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -224,7 +223,7 @@ use Spatie\ArtisanDispatchable\Jobs\ArtisanDispatchable;
 
 class ProcessPodcast implements ShouldQueue, ArtisanDispatchable
 {
-     public string $artisanDescription = 'This a custom description';
+    public string $artisanDescription = 'This a custom description';
 
     public function handle()
     {
@@ -243,7 +242,7 @@ php artisan my-custom-prefix:process-my-podcast
 
 ### Caching discovered jobs
 
-This package can automatically discover jobs that implement `ArtisanDispatchable` and what their artisan command should be through looping through all classes and performing some reflection.  In a local environment this is perfect, as the performance hit is not too bad, and you don't have to do anything special besides letting your job implement `ArtisanDispatchable`.
+This package can automatically discover jobs that implement `ArtisanDispatchable` and what their artisan command should be through looping through all classes and performing some reflection. In a local environment this is perfect, as the performance hit is not too bad, and you don't have to do anything special besides letting your job implement `ArtisanDispatchable`.
 
 In a production environment, you probably don't want to loop through all classes on every request. The package contains a command to cache all discovered jobs.
 
