@@ -5,7 +5,6 @@ namespace Spatie\ArtisanDispatchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Console\ClosureCommand;
 use Illuminate\Support\Str;
-use Illuminate\Support\Stringable;
 use ReflectionClass;
 use ReflectionParameter;
 use Spatie\ArtisanDispatchable\Exceptions\ModelNotFound;
