@@ -149,4 +149,38 @@ class IntegrationTest extends TestCase
         $this->assertJobHandled(ArgumentWithoutTypeTestJob::class);
         $this->assertEquals(1234, self::$handledJob->argumentWithoutType);
     }
+
+    /** @test */
+    public function it_can_have_a_custom_prefix()
+    {
+        config()->set('artisan-dispatchable.command_name_prefix', 'job');
+        config()->set(
+            'artisan-dispatchable.auto_discover_dispatchable_jobs',
+            [$this->getJobsDirectory('IntegrationTestJobs')]
+        );
+        (new ArtisanJobRepository())->registerAll();
+
+        $this
+            ->artisan('job:basic-test')
+            ->assertExitCode(0);
+
+        $this->assertJobHandled(BasicTestJob::class);
+    }
+
+    /** @test */
+    public function it_can_have_a_custom_prefix_and_respect_a_custom_name()
+    {
+        config()->set('artisan-dispatchable.command_name_prefix', 'job');
+        config()->set(
+            'artisan-dispatchable.auto_discover_dispatchable_jobs',
+            [$this->getJobsDirectory('IntegrationTestJobs')]
+        );
+        (new ArtisanJobRepository())->registerAll();
+
+        $this
+            ->artisan("custom:name")
+            ->assertExitCode(0);
+
+        $this->assertJobHandled(CustomNameTestJob::class);
+    }
 }

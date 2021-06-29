@@ -5,6 +5,7 @@ namespace Spatie\ArtisanDispatchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Console\ClosureCommand;
 use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
 use ReflectionClass;
 use ReflectionParameter;
 use Spatie\ArtisanDispatchable\Exceptions\ModelNotFound;
@@ -29,7 +30,10 @@ class ArtisanJob
 
         $shortClassName = class_basename($this->jobClassName);
 
-        return Str::of($shortClassName)->kebab()->beforeLast('-job');
+        return Str::of($shortClassName)
+            ->kebab()
+            ->beforeLast('-job')
+            ->when(config('artisan-dispatchable.command_name_prefix'), fn (Stringable $str, string $prefix) => $str->prepend($prefix . ':'));
     }
 
     public function getCommandDescription(): string
