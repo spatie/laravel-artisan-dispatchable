@@ -30,10 +30,13 @@ class ArtisanJob
 
         $shortClassName = class_basename($this->jobClassName);
 
-        return Str::of($shortClassName)
-            ->kebab()
-            ->beforeLast('-job')
-            ->when(config('artisan-dispatchable.command_name_prefix'), fn (Stringable $str, string $prefix) => $str->prepend($prefix . ':'));
+
+        $prefix = config('artisan-dispatchable.command_name_prefix');
+        $command = Str::of($shortClassName)->kebab()->beforeLast('-job');
+
+        return $prefix
+            ? "{$prefix}:{$command}"
+            : $command;
     }
 
     public function getCommandDescription(): string
