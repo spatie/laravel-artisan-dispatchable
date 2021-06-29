@@ -22,4 +22,9 @@ return [
      * Here you can specify where the cache should be stored.
      */
     'cache_file' => storage_path('app/artisan-dispatchable/artisan-dispatchable-jobs.php'),
+
+    /**
+     * This value specifies the prefix of the command name, when no custom name is set.
+     */
+    'command_name_prefix' => null,
 ];
