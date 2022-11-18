@@ -1,46 +1,33 @@
 <?php
 
-namespace Tests;
-
 use Spatie\ArtisanDispatchable\Console\CacheArtisanDispatchableJobsCommand;
 use Spatie\ArtisanDispatchable\Console\ClearArtisanDispatchableJobsCommand;
-use Spatie\Snapshots\MatchesSnapshots;
 
-class CacheTest extends TestCase
-{
-    use MatchesSnapshots;
+use function Spatie\Snapshots\assertMatchesSnapshot;
 
-    public function setUp(): void
-    {
-        parent::setUp();
+beforeEach(function () {
+    config()->set(
+        'artisan-dispatchable.auto_discover_dispatchable_jobs',
+        [$this->getJobsDirectory('CacheTestJobs')],
+    );
+});
 
-        config()->set(
-            'artisan-dispatchable.auto_discover_dispatchable_jobs',
-            [$this->getJobsDirectory('CacheTestJobs')],
-        );
-    }
+it('can cache the discovered jobs', function () {
+    $this->artisan(CacheArtisanDispatchableJobsCommand::class);
 
-    /** @test */
-    public function it_can_cache_the_discovered_jobs()
-    {
-        $this->artisan(CacheArtisanDispatchableJobsCommand::class);
+    $this->assertFileExists(config('artisan-dispatchable.cache_file'));
 
-        $this->assertFileExists(config('artisan-dispatchable.cache_file'));
+    $content = file_get_contents(config('artisan-dispatchable.cache_file'));
 
-        $content = file_get_contents(config('artisan-dispatchable.cache_file'));
+    assertMatchesSnapshot($content);
+});
 
-        $this->assertMatchesSnapshot($content);
-    }
+it('can remove the cached jobs', function () {
+    $this->artisan(CacheArtisanDispatchableJobsCommand::class);
 
-    /** @test */
-    public function it_can_removed_the_cached_jobs()
-    {
-        $this->artisan(CacheArtisanDispatchableJobsCommand::class);
+    $this->assertFileExists(config('artisan-dispatchable.cache_file'));
 
-        $this->assertFileExists(config('artisan-dispatchable.cache_file'));
+    $this->artisan(ClearArtisanDispatchableJobsCommand::class);
 
-        $this->artisan(ClearArtisanDispatchableJobsCommand::class);
-
-        $this->assertFileDoesNotExist(config('artisan-dispatchable.cache_file'));
-    }
-}
+    $this->assertFileDoesNotExist(config('artisan-dispatchable.cache_file'));
+});
