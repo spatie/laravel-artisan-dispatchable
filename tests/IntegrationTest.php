@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests;
-
 use Illuminate\Support\Facades\Bus;
 use Spatie\ArtisanDispatchable\ArtisanJobRepository;
 use Spatie\ArtisanDispatchable\Exceptions\ModelNotFound;
@@ -16,171 +14,135 @@ use Tests\TestClasses\Jobs\IntegrationTestJobs\ModelTestJob;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\StringTestJob;
 use Tests\TestClasses\Models\TestModel;
 
-class IntegrationTest extends TestCase
-{
-    public function setUp(): void
-    {
-        parent::setUp();
+beforeEach(function () {
+    config()->set(
+        'artisan-dispatchable.auto_discover_dispatchable_jobs',
+        [$this->getJobsDirectory('IntegrationTestJobs')]
+    );
 
-        config()->set(
-            'artisan-dispatchable.auto_discover_dispatchable_jobs',
-            [$this->getJobsDirectory('IntegrationTestJobs')]
-        );
+    (new ArtisanJobRepository())->registerAll();
+});
 
-        (new ArtisanJobRepository())->registerAll();
-    }
+it('can handle a job immediately', function () {
+    $this
+        ->artisan('basic-test')
+        ->assertExitCode(0);
 
-    /** @test */
-    public function it_can_handle_a_job_immediately()
-    {
-        $this
-            ->artisan('basic-test')
-            ->assertExitCode(0);
+    $this->assertJobHandled(BasicTestJob::class);
+});
 
-        $this->assertJobHandled(BasicTestJob::class);
-    }
+it('can put a job on the queue', function () {
+    Bus::fake();
 
-    /** @test */
-    public function it_can_put_a_job_on_the_queue()
-    {
-        Bus::fake();
+    $this
+        ->artisan('basic-test --queued')
+        ->assertExitCode(0);
 
-        $this
-            ->artisan('basic-test --queued')
-            ->assertExitCode(0);
+    Bus::assertDispatched(BasicTestJob::class);
+    $this->assertJobNotHandled();
+});
 
-        Bus::assertDispatched(BasicTestJob::class);
-        $this->assertJobNotHandled();
-    }
+it('will not register jobs that did not implement the marker interface')
+    ->tap(fn () => $this->artisan('invalid'))
+    ->throws(CommandNotFoundException::class);
 
-    /** @test */
-    public function it_will_not_register_jobs_that_did_not_implement_the_marker_interface()
-    {
-        $this->expectException(CommandNotFoundException::class);
+it('can retrieve a model', function () {
+    $testModel = TestModel::factory()->create();
 
-        $this->artisan('invalid');
-    }
+    $this
+        ->artisan("model-test --testModel={$testModel->id}")
+        ->assertExitCode(0);
 
-    /** @test */
-    public function it_can_retrieve_a_model()
-    {
-        $testModel = TestModel::factory()->create();
+    $this->assertJobHandled(ModelTestJob::class);
 
-        $this
-            ->artisan("model-test --testModel={$testModel->id}")
-            ->assertExitCode(0);
+    expect(self::$handledJob->testModel->id)->toEqual($testModel->id);
+});
 
-        $this->assertJobHandled(ModelTestJob::class);
+it('will throw an exception if a model cannot be found', function () {
+    $this
+        ->artisan("model-test --testModel=1234")
+        ->assertExitCode(0);
+})->throws(ModelNotFound::class);
 
-        $this->assertEquals($testModel->id, self::$handledJob->testModel->id);
-    }
+it('will throw an exception if a required parameter is not passed')
+    ->tap(fn () => $this->artisan("model-test"))
+    ->throws(RequiredOptionMissing::class);
 
-    /** @test */
-    public function it_will_throw_an_exception_if_a_model_cannot_be_found()
-    {
-        $this->expectException(ModelNotFound::class);
+it('can handle string options', function () {
+    $this
+        ->artisan("string-test --myString='first string' --anotherString='another string'")
+        ->assertExitCode(0);
 
-        $this
-            ->artisan("model-test --testModel=1234")
-            ->assertExitCode(0);
-    }
+    $this->assertJobHandled(StringTestJob::class);
 
-    /** @test */
-    public function it_will_throw_an_exception_if_a_required_parameter_is_not_passed()
-    {
-        $this->expectException(RequiredOptionMissing::class);
+    expect(self::$handledJob->myString)->toEqual('first string')
+        ->and(self::$handledJob->anotherString)->toEqual('another string');
+});
 
-        $this->artisan("model-test");
-    }
+it('can handle integer options', function () {
+    $this
+        ->artisan("integer-test --myInteger=1234")
+        ->assertExitCode(0);
 
-    /** @test */
-    public function it_can_handle_string_options()
-    {
-        $this
-            ->artisan("string-test --myString='first string' --anotherString='another string'")
-            ->assertExitCode(0);
+    $this->assertJobHandled(IntegerTestJob::class);
+    expect(self::$handledJob->myInteger)->toEqual(1234);
+});
 
-        $this->assertJobHandled(StringTestJob::class);
+it('can handle boolean options', function () {
+    $this
+        ->artisan("boolean-test --firstBoolean=1 --secondBoolean=0")
+        ->assertExitCode(0);
 
-        $this->assertEquals('first string', self::$handledJob->myString);
-        $this->assertEquals('another string', self::$handledJob->anotherString);
-    }
+    $this->assertJobHandled(BooleanTestJob::class);
 
-    /** @test */
-    public function it_can_handle_integer_options()
-    {
-        $this
-            ->artisan("integer-test --myInteger=1234")
-            ->assertExitCode(0);
+    expect(self::$handledJob->firstBoolean)->toBeTrue()
+        ->and(self::$handledJob->secondBoolean)->toBeFalse();
+});
 
-        $this->assertJobHandled(IntegerTestJob::class);
-        $this->assertEquals(1234, self::$handledJob->myInteger);
-    }
+it('can use handle a custom name', function () {
+    $this
+        ->artisan("custom:name")
+        ->assertExitCode(0);
 
-    /** @test */
-    public function it_can_handle_boolean_options()
-    {
-        $this
-            ->artisan("boolean-test --firstBoolean=1 --secondBoolean=0")
-            ->assertExitCode(0);
+    $this->assertJobHandled(CustomNameTestJob::class);
+});
 
-        $this->assertJobHandled(BooleanTestJob::class);
-        $this->assertTrue(self::$handledJob->firstBoolean);
-        $this->assertFalse(self::$handledJob->secondBoolean);
-    }
+it('can accept an argument without a type', function () {
+    $this
+        ->artisan('argument-without-type-test --argumentWithoutType=1234')
+        ->assertExitCode(0);
 
-    /** @test */
-    public function it_can_use_handle_a_custom_name()
-    {
-        $this
-            ->artisan("custom:name")
-            ->assertExitCode(0);
+    $this->assertJobHandled(ArgumentWithoutTypeTestJob::class);
 
-        $this->assertJobHandled(CustomNameTestJob::class);
-    }
+    expect(self::$handledJob->argumentWithoutType)->toEqual(1234);
+});
 
-    /** @test */
-    public function it_can_accept_an_argument_without_a_type()
-    {
-        $this
-            ->artisan('argument-without-type-test --argumentWithoutType=1234')
-            ->assertExitCode(0);
+it('can have a custom prefix', function () {
+    config()->set('artisan-dispatchable.command_name_prefix', 'job');
+    config()->set(
+        'artisan-dispatchable.auto_discover_dispatchable_jobs',
+        [$this->getJobsDirectory('IntegrationTestJobs')]
+    );
+    (new ArtisanJobRepository())->registerAll();
 
-        $this->assertJobHandled(ArgumentWithoutTypeTestJob::class);
-        $this->assertEquals(1234, self::$handledJob->argumentWithoutType);
-    }
+    $this
+        ->artisan('job:basic-test')
+        ->assertExitCode(0);
 
-    /** @test */
-    public function it_can_have_a_custom_prefix()
-    {
-        config()->set('artisan-dispatchable.command_name_prefix', 'job');
-        config()->set(
-            'artisan-dispatchable.auto_discover_dispatchable_jobs',
-            [$this->getJobsDirectory('IntegrationTestJobs')]
-        );
-        (new ArtisanJobRepository())->registerAll();
+    $this->assertJobHandled(BasicTestJob::class);
+});
 
-        $this
-            ->artisan('job:basic-test')
-            ->assertExitCode(0);
+it('can have a custom prefix and respect a custom name', function () {
+    config()->set('artisan-dispatchable.command_name_prefix', 'job');
+    config()->set(
+        'artisan-dispatchable.auto_discover_dispatchable_jobs',
+        [$this->getJobsDirectory('IntegrationTestJobs')]
+    );
+    (new ArtisanJobRepository())->registerAll();
 
-        $this->assertJobHandled(BasicTestJob::class);
-    }
+    $this
+        ->artisan("custom:name")
+        ->assertExitCode(0);
 
-    /** @test */
-    public function it_can_have_a_custom_prefix_and_respect_a_custom_name()
-    {
-        config()->set('artisan-dispatchable.command_name_prefix', 'job');
-        config()->set(
-            'artisan-dispatchable.auto_discover_dispatchable_jobs',
-            [$this->getJobsDirectory('IntegrationTestJobs')]
-        );
-        (new ArtisanJobRepository())->registerAll();
-
-        $this
-            ->artisan("custom:name")
-            ->assertExitCode(0);
-
-        $this->assertJobHandled(CustomNameTestJob::class);
-    }
-}
+    $this->assertJobHandled(CustomNameTestJob::class);
+});
