@@ -41,12 +41,11 @@
         "psr-4": {
             "Tests\\": "tests",
             "Tests\\Database\\Factories\\": "tests/database/factories"
-
         }
     },
     "scripts": {
-        "test": "./vendor/bin/testbench package:test --parallel --no-coverage",
-        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+        "test": "./vendor/bin/pest --no-coverage",
+        "test-coverage": "vendor/bin/pest --coverage-html coverage"
     },
     "config": {
         "sort-packages": true,
