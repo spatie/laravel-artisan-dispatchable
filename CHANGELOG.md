@@ -2,6 +2,20 @@
 
 All notable changes to `laravel-artisan-dispatchable` will be documented in this file.
 
+## 1.3.1 - 2023-01-24
+
+### What's Changed
+
+- Refactor tests to Pest by @alexmanase in https://github.com/spatie/laravel-artisan-dispatchable/pull/7
+- Laravel 10.x Compatibility by @laravel-shift in https://github.com/spatie/laravel-artisan-dispatchable/pull/8
+
+### New Contributors
+
+- @alexmanase made their first contribution in https://github.com/spatie/laravel-artisan-dispatchable/pull/7
+- @laravel-shift made their first contribution in https://github.com/spatie/laravel-artisan-dispatchable/pull/8
+
+**Full Changelog**: https://github.com/spatie/laravel-artisan-dispatchable/compare/1.3.0...1.3.1
+
 ## 1.3.0 - 2022-01-19
 
 - support Laravel 9
