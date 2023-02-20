@@ -20,7 +20,7 @@
         "illuminate/console": "^8.46|^9.0|^10.0",
         "illuminate/contracts": "^8.46|^9.0|^10.0",
         "spatie/laravel-package-tools": "^1.4.3",
-        "spatie/phpunit-snapshot-assertions": "^4.2"
+        "spatie/phpunit-snapshot-assertions": "^4.2|^5.0"
     },
     "require-dev": {
         "brianium/paratest": "^6.2",
