@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-artisan-dispatchable` will be documented in this file.
 
+## 1.3.2 - 2023-02-20
+
+### What's Changed
+
+- support spatie/phpunit-snapshot-assertions v5 by @rjocoleman in https://github.com/spatie/laravel-artisan-dispatchable/pull/9
+
+### New Contributors
+
+- @rjocoleman made their first contribution in https://github.com/spatie/laravel-artisan-dispatchable/pull/9
+
+**Full Changelog**: https://github.com/spatie/laravel-artisan-dispatchable/compare/1.3.1...1.3.2
+
 ## 1.3.1 - 2023-01-24
 
 ### What's Changed
