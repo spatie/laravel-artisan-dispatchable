@@ -1,11 +1,6 @@
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
-
 # Dispatch Laravel jobs via Artisan
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-artisan-dispatchable.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-artisan-dispatchable)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-artisan-dispatchable/run-tests?label=tests)](https://github.com/spatie/laravel-artisan-dispatchable/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-artisan-dispatchable/Check%20&%20fix%20styling?label=code%20style)](https://github.com/spatie/laravel-artisan-dispatchable/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-artisan-dispatchable.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-artisan-dispatchable)(https://github.com/spatie/laravel-artisan-dispatchable/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-artisan-dispatchable.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-artisan-dispatchable)
 
 This package can register jobs as Artisan commands. All you need to do is let your job implement the empty `ArtisanDispatchable` interface.
