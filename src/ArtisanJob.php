@@ -83,6 +83,10 @@ class ArtisanJob
                 $value = $command->option($parameterName);
 
                 if (is_null($value)) {
+                    if ($parameter->isDefaultValueAvailable()) {
+                        return $parameter->getDefaultValue();
+                    }
+
                     throw RequiredOptionMissing::make($this->getCommandName(), $parameterName);
                 }
 

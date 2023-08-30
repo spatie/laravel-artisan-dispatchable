@@ -11,6 +11,7 @@ use Tests\TestClasses\Jobs\IntegrationTestJobs\BooleanTestJob;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\CustomNameTestJob;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\IntegerTestJob;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\ModelTestJob;
+use Tests\TestClasses\Jobs\IntegrationTestJobs\OptionalParameterTestJob;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\StringTestJob;
 use Tests\TestClasses\Models\TestModel;
 
@@ -67,6 +68,13 @@ it('will throw an exception if a model cannot be found', function () {
 it('will throw an exception if a required parameter is not passed')
     ->tap(fn () => $this->artisan("model-test"))
     ->throws(RequiredOptionMissing::class);
+
+it('can have optional parameters', function () {
+    $this->artisan("optional-parameter-test")
+        ->assertExitCode(0);
+
+    $this->assertJobHandled(OptionalParameterTestJob::class);
+});
 
 it('can handle string options', function () {
     $this
