@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-artisan-dispatchable` will be documented in this file.
 
+## 1.4.0 - 2023-08-30
+
+### What's Changed
+
+- Allow Optional Parameters by @audiojames in https://github.com/spatie/laravel-artisan-dispatchable/pull/10
+
+### New Contributors
+
+- @audiojames made their first contribution in https://github.com/spatie/laravel-artisan-dispatchable/pull/10
+
+**Full Changelog**: https://github.com/spatie/laravel-artisan-dispatchable/compare/1.3.2...1.4.0
+
 ## 1.3.2 - 2023-02-20
 
 ### What's Changed
