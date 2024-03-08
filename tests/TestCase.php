@@ -18,7 +18,7 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        ray()->newScreen($this->getName());
+        ray()->newScreen($this->name());
 
         $this->deleteCachedJobsFile();
 
