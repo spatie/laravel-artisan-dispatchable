@@ -16,20 +16,19 @@
         }
     ],
     "require": {
-        "php": "^8.0",
-        "illuminate/console": "^8.46|^9.0|^10.0|^11.0",
-        "illuminate/contracts": "^8.46|^9.0|^10.0|^11.0",
+        "php": "^8.2",
+        "illuminate/console": "^10.0|^11.0",
+        "illuminate/contracts": "^10.0|^11.0",
         "spatie/laravel-package-tools": "^1.4.3"
     },
     "require-dev": {
         "brianium/paratest": "^6.2|^7.4",
-        "nunomaduro/collision": "^5.3|^6.0|^8.0",
-        "orchestra/testbench": "^6.15|^7.0|^8.0|^9.0",
-        "pestphp/pest": "^1.22|^2.34",
-        "phpunit/phpunit": "^9.3|^10.5",
+        "nunomaduro/collision": "^6.0|^7.0|^8.0",
+        "orchestra/testbench": "^8.0|^9.0",
+        "pestphp/pest": "^2.34",
         "spatie/laravel-ray": "^1.9",
-        "spatie/pest-plugin-snapshots": "^1.1|^2.1",
-        "spatie/phpunit-snapshot-assertions": "^4.2|^5.0"
+        "spatie/pest-plugin-snapshots": "^2.1",
+        "spatie/phpunit-snapshot-assertions": "^5.0"
     },
     "autoload": {
         "psr-4": {
