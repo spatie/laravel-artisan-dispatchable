@@ -17,7 +17,7 @@ class ArtisanJobRepository
                 Artisan::command($discoveredArtisanJob->commandSignature, function () use ($artisanJob) {
                     /** @var $this ClosureCommand */
                     $artisanJob->handleCommand($this);
-                });
+                })->purpose($discoveredArtisanJob->commandDescription);
             });
     }
 
