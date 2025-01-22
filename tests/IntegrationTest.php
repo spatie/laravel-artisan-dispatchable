@@ -1,9 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Bus;
 use Spatie\ArtisanDispatchable\ArtisanJobRepository;
 use Spatie\ArtisanDispatchable\Exceptions\ModelNotFound;
 use Spatie\ArtisanDispatchable\Exceptions\RequiredOptionMissing;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\ArgumentWithoutTypeTestJob;
 use Tests\TestClasses\Jobs\IntegrationTestJobs\BasicTestJob;
@@ -113,6 +115,15 @@ it('can use handle a custom name', function () {
         ->assertExitCode(0);
 
     $this->assertJobHandled(CustomNameTestJob::class);
+});
+
+it('can handle a custom description', function () {
+    expect(collect(Artisan::all()))
+        ->contains(
+            fn (Command $command) => $command->getName() === 'custom-description-test'
+                && $command->getDescription() === 'This a custom description'
+        )
+        ->toBeTrue();
 });
 
 it('can accept an argument without a type', function () {
