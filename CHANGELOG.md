@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-artisan-dispatchable` will be documented in this file.
 
+## 1.5.1 - 2025-01-22
+
+### What's Changed
+
+* Fix command descriptions by @inmula in https://github.com/spatie/laravel-artisan-dispatchable/pull/13
+
+### New Contributors
+
+* @inmula made their first contribution in https://github.com/spatie/laravel-artisan-dispatchable/pull/13
+
+**Full Changelog**: https://github.com/spatie/laravel-artisan-dispatchable/compare/1.5.0...1.5.1
+
 ## 1.5.0 - 2024-03-08
 
 ### What's Changed
