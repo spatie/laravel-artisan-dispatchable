@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-artisan-dispatchable` will be documented in this file.
 
+## 1.5.2 - 2025-02-21
+
+### What's Changed
+
+* Laravel 12.x Compatibility by @laravel-shift in https://github.com/spatie/laravel-artisan-dispatchable/pull/14
+
+**Full Changelog**: https://github.com/spatie/laravel-artisan-dispatchable/compare/1.5.1...1.5.2
+
 ## 1.5.1 - 2025-01-22
 
 ### What's Changed
