@@ -16,14 +16,10 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        php: ['8.2', '8.3', '8.4', '8.5']
-        laravel: ['10.*', '11.*', '12.*', '13.*']
+        php: ['8.2', '8.3', '8.4', '8.5', '8.6']
+        laravel: ['12.*', '13.*']
         stability: [prefer-lowest, prefer-stable]
         include:
-          - laravel: 10.*
-            testbench: 8.*
-          - laravel: 11.*
-            testbench: 9.*
           - laravel: 12.*
             testbench: 10.*
           - laravel: 13.*
@@ -44,11 +40,6 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
-
-      - name: Create database
-        run: |
-          sudo /etc/init.d/mysql start
-          mysql  -u root -proot -e 'CREATE DATABASE IF NOT EXISTS laravel_artisan_dispatchable;'
 
       - name: Setup problem matchers
         run: |

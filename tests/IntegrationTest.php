@@ -45,9 +45,9 @@ it('can put a job on the queue', function () {
     $this->assertJobNotHandled();
 });
 
-it('will not register jobs that did not implement the marker interface')
-    ->tap(fn () => $this->artisan('invalid'))
-    ->throws(CommandNotFoundException::class);
+it('will not register jobs that did not implement the marker interface', function () {
+    $this->artisan('invalid');
+})->throws(CommandNotFoundException::class);
 
 it('can retrieve a model', function () {
     $testModel = TestModel::factory()->create();
@@ -67,9 +67,9 @@ it('will throw an exception if a model cannot be found', function () {
         ->assertExitCode(0);
 })->throws(ModelNotFound::class);
 
-it('will throw an exception if a required parameter is not passed')
-    ->tap(fn () => $this->artisan("model-test"))
-    ->throws(RequiredOptionMissing::class);
+it('will throw an exception if a required parameter is not passed', function () {
+    $this->artisan("model-test");
+})->throws(RequiredOptionMissing::class);
 
 it('can have optional parameters', function () {
     $this->artisan("optional-parameter-test")
